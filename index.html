@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/index.css">
+    <title>Mesto Russia</title>
+</head>
+<body class="root">
+    <div class="page">
+        <header class="header narrow">
+            <img class="logo logo_position_header" src="./images/icons/logo.svg" alt="Логотип проекта">
+
+        </header>
+
+        <main class="main narrow">
+            <section class="profile">
+                <div class="profile__data">
+                    <img class="profile__pic"src="./images/profile/profile-pic.jpg" alt="">
+                    <div class="profile__container">
+                        <h1 class="profile__title">Жак-Ив Кусто</h1>
+                        <button class="button button_type_edit change-opacity"></button>
+                        <p class="profile__subtitle">Исследователь океана</p>
+                    </div>
+
+                </div>
+                <button class="button button_type_add change-opacity"></button>
+            </section>
+
+            <section class="photo-grid">
+                <ul class="photo-grid__list">
+                    <li class="photo-grid__list-item">
+                        <a class="card" href="#">
+                            <img class="card__image" src="./images/photo-grid/volgograd.jpg" alt="">
+                            <div class="card__content">
+                                <h2 class="card__heading">Волгоград</h2>
+                                <button class="button button_type_heart change-opacity"></button>
+                            </div>
+                        </a>
+                    </li>                
+                    <li class="photo-grid__list-item">
+                        <a class="card" href="#">
+                            <img class="card__image" src="./images/photo-grid/chelyabinsk.jpg" alt="">
+                            <div class="card__content">
+                                <h2 class="card__heading">Челябинск</h2>
+                                <button class="button button_type_heart change-opacity"></button>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="photo-grid__list-item">
+                        <a class="card" href="#">
+                            <img class="card__image" src="./images/photo-grid/karelia.jpg" alt="">
+                            <div class="card__content">
+                                <h2 class="card__heading">Карелия</h2>
+                                <button class="button button_type_heart change-opacity"></button>
+                            </div>
+                        </a>
+                    </li>                
+                    <li class="photo-grid__list-item">
+                        <a class="card" href="#">
+                            <img class="card__image" src="./images/photo-grid/saint-p.jpg" alt="">
+                            <div class="card__content">
+                                <h2 class="card__heading">Сaнкт-Петербург</h2>
+                                <button class="button button_type_heart change-opacity"></button>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="photo-grid__list-item">
+                        <a class="card" href="#">
+                            <img class="card__image" src="./images/photo-grid/sochi.jpg" alt="">
+                            <div class="card__content">
+                                <h2 class="card__heading">Сочи</h2>
+                                <button class="button button_type_heart change-opacity"></button>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="photo-grid__list-item">
+                        <a class="card" href="#">
+                            <img class="card__image" src="./images/photo-grid/murmansk.jpg" alt="">
+                            <div class="card__content">
+                                <h2 class="card__heading">Мурманск</h2>
+                                <button class="button button_type_heart change-opacity"></button>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </main>
+
+        <footer class="footer narrow">
+            <p class="footer__text">&copy; 2020 Mesto Russia</p>
+        </footer>
+        <div class="popup">
+            <div class="popup__container">
+                <h2 class="popup__heading">Редактировать профиль</h2>
+                <form action="#">
+                    <input class="popup__input popup__input_type_name" type="text" value="Жак-Ив Кусто">
+                    <input class="popup__input popup__input_type_about" type="text" value="Исследователь океана">
+                    <button class="button button_type_save change-opacity">Сохранить</button>
+                </form>
+                <div class="button button_type_close change-opacity"></div>
+            </div>
+            
+        </div>
+
+    </div>
+</body>
+</html>
