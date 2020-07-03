@@ -229,6 +229,10 @@ main {
   display: none;
 }
 
+.popup_opened {
+    display: block;
+}
+
 .popup__container {
   position: fixed;
   top: 195px;
