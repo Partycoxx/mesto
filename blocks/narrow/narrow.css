@@ -1,0 +1,14 @@
+.narrow {
+  margin: 0 15.5%;
+}
+
+@media screen and (max-width: 665px) {
+  .narrow {
+    margin: 0 7.5%;
+  }
+}
+
+@media screen and (max-width: 495px) {
+  .narrow {
+    margin: 0 5.9%;
+  }

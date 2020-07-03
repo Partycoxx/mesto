@@ -1,0 +1,10 @@
+.logo_position_header {
+  margin-bottom: 40px;
+}
+
+@media screen and (max-width: 495px) {
+
+  .logo_position_header {
+    margin: 0 0 31.6px 27px;
+  }
+}

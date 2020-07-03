@@ -1,0 +1,24 @@
+.button_type_close {
+  width: 40.7px;
+  height: 40.7px;
+  background-image: url(../../../images/icons/Close_Icon.svg);
+  background-color: rgba(0, 0, 0, 0);
+  background-position: center;
+  color: #fff;
+  position: fixed;
+  top: 154.3px;
+  left: calc((100% + 430px) / 2);
+}
+
+@media screen and (max-width: 566px) {
+  .button_type_close {
+    left: calc((100% + 300px) / 2);
+  }
+}
+
+@media screen and (max-width: 382px) {
+  .button_type_close {
+    top: 148.3px;
+    left: calc((100% + 205.3px) / 2);
+  }
+}

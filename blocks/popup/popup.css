@@ -1,0 +1,14 @@
+@import url(./__container/popup__container.css);
+@import url(./__heading/popup__heading.css);
+@import url(./__input/popup__input.css);
+@import url(./__input/_type/popup__input_type_about.css);
+
+.popup {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  display: none;
+}

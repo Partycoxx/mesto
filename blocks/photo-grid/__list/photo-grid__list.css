@@ -1,0 +1,26 @@
+.photo-grid__list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(200px, 282px));
+  grid-template-rows: repeat(auto-fit, minmax(100px, max-content));
+  grid-column-gap: 18px;
+  grid-row-gap: 21px;
+  justify-content: space-evenly;
+}
+
+@media screen and (max-width: 1034px) {
+
+  .photo-grid__list {
+    grid-template-columns: repeat(2, minmax(200px, 282px));
+  }
+}
+
+@media screen and (max-width: 495px) {
+
+  .photo-grid__list {
+    grid-template-columns: minmax(200px, 282px);
+  }
+}
+
