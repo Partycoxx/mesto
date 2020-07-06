@@ -3,16 +3,11 @@
 @import url(../blocks/root/root.css);
 @import url(../blocks/page/page.css);
 @import url(../blocks/narrow/narrow.css);
+@import url(../blocks/button/button.css);
 @import url(../blocks/header/header.css);
 @import url(../blocks/logo/logo.css);
 @import url(../blocks/main/main.css);
 @import url(../blocks/profile/profile.css);
-@import url(../blocks/button/button.css);
-@import url(../blocks/button/_type/button_type_add.css);
-@import url(../blocks/button/_type/button_type_edit.css);
-@import url(../blocks/button/_type/button_type_heart.css);
-@import url(../blocks/button/_type/button_type_save.css);
-@import url(../blocks/button/_type/button_type_close.css);
 @import url(../blocks/change-opacity/change-opacity.css);
 @import url(../blocks/photo-grid/photo-grid.css);
 @import url(../blocks/card/card.css);

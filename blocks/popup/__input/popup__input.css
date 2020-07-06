@@ -10,3 +10,7 @@
   font-size: 14px;
   line-height: 17px;
 }
+
+.popup__input:nth-child(2n) {
+  margin: 0 0 34.8px;
+}

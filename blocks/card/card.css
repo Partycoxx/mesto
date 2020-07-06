@@ -1,9 +1,9 @@
 @import url(./__image/card__image.css);
 @import url(./__content/card__content.css);
 @import url(./__heading/card__heading.css);
+@import url(./__button/card__button.css);
 
 .card {
-  text-decoration: none;
   display: flex;
   flex-direction: column;
 }

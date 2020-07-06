@@ -18,68 +18,56 @@
                         <img class="profile__pic" src="./images/profile/profile-pic.jpg" alt="Фото профиля" />
                         <div class="profile__container">
                             <h1 class="profile__title">Жак-Ив Кусто</h1>
-                            <button class="button button_type_edit change-opacity"></button>
+                            <button class="button profile__button profile__button_type_edit change-opacity" aria-label="Редактировать" type="button"></button>
                             <p class="profile__subtitle">Исследователь океана</p>
                         </div>
                     </div>
-                    <button class="button button_type_add change-opacity"></button>
+                    <button class="button profile__button profile__button_type_add change-opacity" aria-label="Добавить фото" type="button"></button>
                 </section>
 
                 <section class="photo-grid">
                     <ul class="photo-grid__list">
-                        <li class="photo-grid__list-item">
-                            <a class="card" href="#">
-                                <img class="card__image" src="./images/photo-grid/volgograd.jpg" alt="Фото из Волгограда" />
-                                <div class="card__content">
-                                    <h2 class="card__heading">Волгоград</h2>
-                                    <button class="button button_type_heart change-opacity"></button>
-                                </div>
-                            </a>
+                        <li class="card">
+                            <img class="card__image" src="./images/photo-grid/volgograd.jpg" alt="Фото из Волгограда" />
+                            <div class="card__content">
+                                <h2 class="card__heading">Волгоград</h2>
+                                <button class="button card__button change-opacity" type="button" aria-label="Оценить фото"></button>
+                            </div>
                         </li>
-                        <li class="photo-grid__list-item">
-                            <a class="card" href="#">
-                                <img class="card__image" src="./images/photo-grid/chelyabinsk.jpg" alt="Фото из Челябинска" />
-                                <div class="card__content">
-                                    <h2 class="card__heading">Челябинск</h2>
-                                    <button class="button button_type_heart change-opacity"></button>
-                                </div>
-                            </a>
+                        <li class="card">
+                            <img class="card__image" src="./images/photo-grid/chelyabinsk.jpg" alt="Фото из Челябинска" />
+                            <div class="card__content">
+                                <h2 class="card__heading">Челябинск</h2>
+                                <button class="button card__button change-opacity" type="button" aria-label="Оценить фото"></button>
+                            </div>
                         </li>
-                        <li class="photo-grid__list-item">
-                            <a class="card" href="#">
-                                <img class="card__image" src="./images/photo-grid/karelia.jpg" alt="Фото из Карелии" />
-                                <div class="card__content">
-                                    <h2 class="card__heading">Карелия</h2>
-                                    <button class="button button_type_heart change-opacity"></button>
-                                </div>
-                            </a>
+                        <li class="card">
+                            <img class="card__image" src="./images/photo-grid/karelia.jpg" alt="Фото из Карелии" />
+                            <div class="card__content">
+                                <h2 class="card__heading">Карелия</h2>
+                                <button class="button card__button change-opacity" type="button" aria-label="Оценить фото"></button>
+                            </div>
                         </li>
-                        <li class="photo-grid__list-item">
-                            <a class="card" href="#">
-                                <img class="card__image" src="./images/photo-grid/saint-p.jpg" alt="Фото из Санкт-Петербурга" />
-                                <div class="card__content">
-                                    <h2 class="card__heading">Сaнкт-Петербург</h2>
-                                    <button class="button button_type_heart change-opacity"></button>
-                                </div>
-                            </a>
+                        <li class="card">
+                            <img class="card__image" src="./images/photo-grid/saint-p.jpg" alt="Фото из Санкт-Петербурга" />
+                            <div class="card__content">
+                                <h2 class="card__heading">Сaнкт-Петербург</h2>
+                                <button class="button card__button change-opacity" type="button" aria-label="Оценить фото"></button>
+                            </div>
                         </li>
-                        <li class="photo-grid__list-item">
-                            <a class="card" href="#">
-                                <img class="card__image" src="./images/photo-grid/sochi.jpg" alt="Фото из Сочи" />
-                                <div class="card__content">
-                                    <h2 class="card__heading">Сочи</h2>
-                                    <button class="button button_type_heart change-opacity"></button>
-                                </div>
-                            </a>
+                        <li class="card">
+                            <img class="card__image" src="./images/photo-grid/sochi.jpg" alt="Фото из Сочи" />
+                            <div class="card__content">
+                                <h2 class="card__heading">Сочи</h2>
+                                <button class="button card__button change-opacity" type="button" aria-label="Оценить фото"></button>
+                            </div>
                         </li>
-                        <li class="photo-grid__list-item">
-                            <a class="card" href="#">
-                                <img class="card__image" src="./images/photo-grid/murmansk.jpg" alt="Фото из Мурманска" />
-                                <div class="card__content">
-                                    <h2 class="card__heading">Мурманск</h2>
-                                    <button class="button button_type_heart change-opacity"></button>
-                                </div>
-                            </a>
+                        <li class="card">
+                            <img class="card__image" src="./images/photo-grid/murmansk.jpg" alt="Фото из Мурманска" />
+                            <div class="card__content">
+                                <h2 class="card__heading">Мурманск</h2>
+                                <button class="button card__button change-opacity" type="button" aria-label="Оценить фото"></button>
+                            </div>
                         </li>
                     </ul>
                 </section>
@@ -93,15 +81,17 @@
         <div class="popup">
             <div class="popup__container">
                 <h2 class="popup__heading">Редактировать профиль</h2>
-                <form class="popup__form" action="#">
-                    <input class="popup__input popup__input_type_name" type="text" value="Имя" />
-                    <input class="popup__input popup__input_type_about" type="text" value="Работа" />
-                    <button class="button button_type_save" type="submit">Сохранить</button>
+                <form class="popup__form" action="#" name="profile-info" method="post">
+                    <input class="popup__input popup__input_type_name" type="text" name="name" placeholder="Кто вы?" required />
+                    <input class="popup__input popup__input_type_about" type="text" name="about" placeholder="Чем вы занимаетесь?" required />
+                    <button class="button popup__button popup__button_type_save" type="submit">
+                        Сохранить
+                    </button>
                 </form>
-                <div class="button button_type_close change-opacity"></div>
+                <button class="button popup__button popup__button_type_close change-opacity" type="button" aria-label="Закрыть окно"></button>
             </div>
         </div>
 
-        <script src="./script.js"></script>
+        <script src="./scripts/script.js"></script>
     </body>
 </html>

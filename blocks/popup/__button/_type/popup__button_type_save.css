@@ -1,0 +1,14 @@
+.popup__button_type_save {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center;
+    height: 50px;
+    transition: background-color 0.2s linear;
+    
+  }
+  
+  .popup__button_type_save:hover {
+      background-color: rgba(0, 0, 0, .8);
+  }
