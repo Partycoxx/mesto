@@ -1,14 +1,15 @@
-.profile__button_type_add {
+.profile__add-button {
+    background-color: #000;
     border: 2px solid #fff;
     height: 50px;
     max-width: 150px;
-    background-image: url(../../../../images/icons/add_button.svg);
+    background-image: url(../../../images/icons/add_button.svg);
     border-radius: 2px;
   }
   
   @media screen and (max-width: 1034px) {
   
-    .profile__button_type_add {
+    .profile__add-button {
       max-width: 100%;
       margin: 30px 0 0;
     }

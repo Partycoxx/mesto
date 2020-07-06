@@ -1,4 +1,7 @@
-.popup__button_type_save {
+.popup__save-button {
+    color: #fff;
+    background-color: #000;
+    border: none;
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
@@ -9,6 +12,6 @@
     
   }
   
-  .popup__button_type_save:hover {
+  .popup__save-button:hover {
       background-color: rgba(0, 0, 0, .8);
   }

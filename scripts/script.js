@@ -2,8 +2,8 @@ let content = document.querySelector(".page");
 let popupWindow = document.querySelector(".popup");
 
 /* Выбор кнопок */
-let editButton = content.querySelector(".profile__button_type_edit");
-let cancelButton = popupWindow.querySelector(".popup__button_type_close");
+let editButton = content.querySelector(".profile__edit-button");
+let cancelButton = popupWindow.querySelector(".popup__close-button");
 
 /* Выбор формы и её полей */ 
 let formElement = popupWindow.querySelector(".popup__form");
