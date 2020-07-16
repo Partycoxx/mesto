@@ -73,7 +73,7 @@ function openSecondPopup() {
 
 /* Функция, которая сохраняет введённые пользователем данные  */
 
-function formSubmitHandler(evt) {
+function editSubmitHandler(evt) {
   evt.preventDefault();
 
   /* Присваиваем переменным значения input */
@@ -110,13 +110,29 @@ function makeVisible(arg) {
     : arg.classList.add("popup_opened");
   }
 
+/* Поле экспериментов*/
 
+function addSubmitHandler(evt) {
+  evt.preventDefault();
+
+   let newPlace = cardTemplate.cloneNode(true);
+  newPlace.querySelector('.card__image').src = popupLink.value;
+  newPlace.querySelector('.card__heading').textContent = popupPlace.value;
+
+  photoList.prepend(newPlace);
+
+  popupLink.value = '';
+  popupPlace.value = '';
+
+  makeVisible(secondPopup);
+}
 
 loadCards();
 
 editButton.addEventListener("click", openFirstPopup);
 addButton.addEventListener("click", openSecondPopup);
-formEditProfile.addEventListener("submit", formSubmitHandler);
+formEditProfile.addEventListener("submit", editSubmitHandler);
+formAddPlace.addEventListener("submit", addSubmitHandler);
 
 /* Обработчики событий для кнопок, закрывающих модалки */
 cancelButton.forEach(item => {
