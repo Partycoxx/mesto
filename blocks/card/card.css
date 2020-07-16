@@ -2,8 +2,10 @@
 @import url(./__content/card__content.css);
 @import url(./__heading/card__heading.css);
 @import url(./__button/card__button.css);
+@import url(./__button-trash/card__button-trash.css);
 
 .card {
+  position: relative;
   display: flex;
   flex-direction: column;
 }

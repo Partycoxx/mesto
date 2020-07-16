@@ -1,8 +1,16 @@
 .card__button-trash {
+    position: absolute;
+    top: 18px;
+    right: 15px;
+
     width: 18px;
     height: 19.3px;
 
     background-image: url(../../../images/icons/delete_button.svg);
     background-position: center;
     background-size: cover;
+    background-color: rgba(0, 0, 0, 0);
+
+    border: none;
+
 }
