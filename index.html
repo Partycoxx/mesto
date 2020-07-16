@@ -50,6 +50,20 @@
                 <button class="button popup__close-button change-opacity" type="button" aria-label="Закрыть окно"></button>
             </div>
         </div>
+        <div class="popup">
+            <div class="popup__container">
+                <h2 class="popup__heading">Новое место</h2>
+                <form class="popup__form" action="#" name="profile-info" method="post">
+                    <input class="popup__input popup__input_type_place" type="text" name="place" placeholder="Название" required />
+                    <input class="popup__input popup__input_type_link" type="text" name="link" placeholder="Ссылка на картинку" required />
+                    <button class="button popup__save-button" type="submit">
+                        Создать
+                    </button>
+                </form>
+                <button class="button popup__close-button change-opacity" type="button" aria-label="Закрыть окно"></button>
+            </div>
+        </div>
+
         
         <template id="card-template">
             <li class="card">
@@ -60,7 +74,6 @@
                     <button class="button card__button change-opacity" type="button" aria-label="Оценить фото"></button>
                 </div>
             </li>
-
         </template>
         <script src="./scripts/script.js"></script>
     </body>
