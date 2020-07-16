@@ -26,50 +26,8 @@
                 </section>
 
                 <section class="photo-grid">
-                    <ul class="photo-grid__list">
-                        <li class="card">
-                            <button class="button card__button-trash change-opacity" type="button"></button>
-                            <img class="card__image" src="./images/photo-grid/volgograd.jpg" alt="Фото из Волгограда" />
-                            <div class="card__content">
-                                <h2 class="card__heading">Волгоград</h2>
-                                <button class="button card__button change-opacity" type="button" aria-label="Оценить фото"></button>
-                            </div>
-                        </li>
-                        <li class="card">
-                            <img class="card__image" src="./images/photo-grid/chelyabinsk.jpg" alt="Фото из Челябинска" />
-                            <div class="card__content">
-                                <h2 class="card__heading">Челябинск</h2>
-                                <button class="button card__button change-opacity" type="button" aria-label="Оценить фото"></button>
-                            </div>
-                        </li>
-                        <li class="card">
-                            <img class="card__image" src="./images/photo-grid/karelia.jpg" alt="Фото из Карелии" />
-                            <div class="card__content">
-                                <h2 class="card__heading">Карелия</h2>
-                                <button class="button card__button change-opacity" type="button" aria-label="Оценить фото"></button>
-                            </div>
-                        </li>
-                        <li class="card">
-                            <img class="card__image" src="./images/photo-grid/saint-p.jpg" alt="Фото из Санкт-Петербурга" />
-                            <div class="card__content">
-                                <h2 class="card__heading">Сaнкт-Петербург</h2>
-                                <button class="button card__button change-opacity" type="button" aria-label="Оценить фото"></button>
-                            </div>
-                        </li>
-                        <li class="card">
-                            <img class="card__image" src="./images/photo-grid/sochi.jpg" alt="Фото из Сочи" />
-                            <div class="card__content">
-                                <h2 class="card__heading">Сочи</h2>
-                                <button class="button card__button change-opacity" type="button" aria-label="Оценить фото"></button>
-                            </div>
-                        </li>
-                        <li class="card">
-                            <img class="card__image" src="./images/photo-grid/murmansk.jpg" alt="Фото из Мурманска" />
-                            <div class="card__content">
-                                <h2 class="card__heading">Мурманск</h2>
-                                <button class="button card__button change-opacity" type="button" aria-label="Оценить фото"></button>
-                            </div>
-                        </li>
+                    <ul class="photo-grid__list">                                   
+                                           
                     </ul>
                 </section>
             </main>
@@ -92,7 +50,18 @@
                 <button class="button popup__close-button change-opacity" type="button" aria-label="Закрыть окно"></button>
             </div>
         </div>
+        
+        <template id="card-template">
+            <li class="card">
+                <button class="button card__button-trash change-opacity" type="button" aria-label="Удалить фото"></button>
+                <img class="card__image" src="" alt=""/>
+                <div class="card__content">
+                    <h2 class="card__heading"></h2>
+                    <button class="button card__button change-opacity" type="button" aria-label="Оценить фото"></button>
+                </div>
+            </li>
 
+        </template>
         <script src="./scripts/script.js"></script>
     </body>
 </html>
