@@ -6,14 +6,13 @@ const popupWindows = document.querySelectorAll(".popup");
 const photoList = content.querySelector(".photo-grid__list");
 const cardTemplate = document.querySelector("#card-template").content;
 
-
 /* Выбор кнопок */
 const editButton = content.querySelector(".profile__edit-button");
 const addButton = content.querySelector(".profile__add-button");
-const cancelButton = document.querySelectorAll(".popup__close-button");
+const cancelButtons = document.querySelectorAll(".popup__close-button");
 
+/* Выбор первой формы и её полей */
 
-/* Выбор первой формы и её полей */ 
 const firstPopup = popupWindows[0];
 const formEditProfile = firstPopup.querySelector(".popup__form");
 const popupName = firstPopup.querySelector(".popup__input_type_name");
@@ -33,99 +32,97 @@ let profileJob = content.querySelector(".profile__subtitle");
 
 const initialCards = [
   {
-      name: 'Волгоград',
-      link: './images/photo-grid/volgograd.jpg'
+    name: "Волгоград",
+    link: "./images/photo-grid/volgograd.jpg",
   },
   {
-      name: 'Челябинск',
-      link: './images/photo-grid/chelyabinsk.jpg'
+    name: "Челябинск",
+    link: "./images/photo-grid/chelyabinsk.jpg",
   },
   {
-      name: 'Карелия',
-      link: './images/photo-grid/karelia.jpg'
+    name: "Карелия",
+    link: "./images/photo-grid/karelia.jpg",
   },
   {
-      name: 'Санкт-Петербург',
-      link: './images/photo-grid/saint-p.jpg'
+    name: "Санкт-Петербург",
+    link: "./images/photo-grid/saint-p.jpg",
   },
   {
-      name: 'Сочи',
-      link: './images/photo-grid/sochi.jpg'
+    name: "Сочи",
+    link: "./images/photo-grid/sochi.jpg",
   },
   {
-      name: 'Мурманск',
-      link: './images/photo-grid/murmansk.jpg'
-  }
+    name: "Мурманск",
+    link: "./images/photo-grid/murmansk.jpg",
+  },
 ];
 
-/* Функция, которая открывает и заполняет первое модальное окно */
+/* Функция, которая загружает фото при загрузке страницы */
 
-function openFirstPopup() {
-    makeVisible(firstPopup);
-    popupName.value = profileName.textContent;
-    popupJob.value = profileJob.textContent;
-  }
+function loadCards() {
+  initialCards.map((elem) => {
+    let newItem = cardTemplate.cloneNode(true);
 
-/* Функция, которая открывает второе модальное окно */
-function openSecondPopup() {
-  makeVisible(secondPopup);
+    newItem.querySelector(".card__image").src = elem.link;
+    newItem.querySelector(".card__image").alt = `На фото: ${elem.name}`;
+    newItem.querySelector(".card__heading").textContent = elem.name;
+
+    photoList.append(newItem);
+  });
 }
 
-/* Функция, которая сохраняет введённые пользователем данные  */
+/* Функция, которая открывает и закрывает модалки */
+function openClose(arg) {
+  arg.classList.contains("popup_opened")
+    ? arg.classList.remove("popup_opened")
+    : arg.classList.add("popup_opened");
+}
+
+/* Функция, которая открывает и заполняет модальное окно c редактированием профиля */
+
+function openFirstPopup() {
+  openClose(firstPopup);
+  popupName.value = profileName.textContent;
+  popupJob.value = profileJob.textContent;
+}
+
+/* Функция, которая открывает модальное окно с добавлением снимков */
+function openSecondPopup() {
+  openClose(secondPopup);
+}
+
+/* Функция, которая сохраняет введённые пользователем данные в модальном окне c редактированием профиля */
 
 function editSubmitHandler(evt) {
   evt.preventDefault();
 
-  /* Присваиваем переменным значения input */
-  let editedName = popupName.value; 
+  let editedName = popupName.value;
   let editedJob = popupJob.value;
 
-  /* Вставляем значения переменных в качестве имени пользователя и рода деятельности в профиле */
   profileName.textContent = editedName;
   profileJob.textContent = editedJob;
 
-  makeVisible(firstPopup); /* Закрываем модалку */
+  openClose(firstPopup);
 }
 
-/* Функция, которая загружает содержимое на страницу */
-
-function loadCards () {
-
-initialCards.map((elem) => {
-  let newItem = cardTemplate.cloneNode(true);
-
-  newItem.querySelector('.card__image').src = elem.link;
-  newItem.querySelector('.card__image').alt = `На фото: ${elem.name}`;
-  newItem.querySelector('.card__heading').textContent = elem.name;
-
-  photoList.append(newItem)
-})
- 
-}
-
-/* Функция, которая открывает и закрывает модалки */
-function makeVisible(arg) {
-    arg.classList.contains("popup_opened")
-    ? arg.classList.remove("popup_opened")
-    : arg.classList.add("popup_opened");
-  }
-
-/* Поле экспериментов*/
+/* Функция, которая сохраняет введённые пользователем данные в модальном окне с добавлением фото */
 
 function addSubmitHandler(evt) {
   evt.preventDefault();
 
-   let newPlace = cardTemplate.cloneNode(true);
-  newPlace.querySelector('.card__image').src = popupLink.value;
-  newPlace.querySelector('.card__heading').textContent = popupPlace.value;
+  let newPlace = cardTemplate.cloneNode(true);
+  newPlace.querySelector(".card__image").src = popupLink.value;
+  newPlace.querySelector(".card__heading").textContent = popupPlace.value;
 
   photoList.prepend(newPlace);
 
-  popupLink.value = '';
-  popupPlace.value = '';
+  popupLink.value = "";
+  popupPlace.value = "";
 
-  makeVisible(secondPopup);
+  openClose(secondPopup);
 }
+
+/* Поле экспериментов*/
 
 loadCards();
 
@@ -135,11 +132,26 @@ formEditProfile.addEventListener("submit", editSubmitHandler);
 formAddPlace.addEventListener("submit", addSubmitHandler);
 
 /* Обработчики событий для кнопок, закрывающих модалки */
-cancelButton.forEach(item => {
+cancelButtons.forEach((item) => {
   item.addEventListener("click", function (evt) {
     const eventTarget = evt.target;
     const popup = eventTarget.parentElement.parentElement;
 
-    return makeVisible(popup)
-  })
-})
+    return openClose(popup);
+  });
+});
+
+/* Переменная, в которой храним для лайки */
+const likeButtons = photoList.querySelectorAll(".card__button");
+
+/* Обработчик события для лайков  */ 
+
+likeButtons.forEach((item) => {
+  item.addEventListener("click", function (evt) {
+    const eventTarget = evt.target;
+
+    eventTarget.classList.contains("card__button_type_liked")
+      ? eventTarget.classList.remove("card__button_type_liked")
+      : eventTarget.classList.add("card__button_type_liked") && eventTarget.classList.remove("change-opacity");
+  });
+});
