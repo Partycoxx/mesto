@@ -152,6 +152,6 @@ likeButtons.forEach((item) => {
 
     eventTarget.classList.contains("card__button_type_liked")
       ? eventTarget.classList.remove("card__button_type_liked")
-      : eventTarget.classList.add("card__button_type_liked") && eventTarget.classList.remove("change-opacity");
+      : eventTarget.classList.add("card__button_type_liked");
   });
 });
