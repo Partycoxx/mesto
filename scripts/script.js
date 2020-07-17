@@ -57,7 +57,7 @@ const initialCards = [
   },
 ];
 
-/* Функция, которая загружает фото при загрузке страницы */
+/* Функция, которая загружает карточки при загрузке страницы */
 
 function loadCards() {
   initialCards.map((elem) => {
@@ -71,24 +71,55 @@ function loadCards() {
   });
 }
 
-/* Функция, которая открывает и закрывает модалки */
-function openClose(arg) {
-  arg.classList.contains("popup_opened")
-    ? arg.classList.remove("popup_opened")
-    : arg.classList.add("popup_opened");
+loadCards();
+
+/* Функция, которая добавляет обработчики событий */
+function generateEventListeners() {
+  /* Переменные, в которых хранятся элементы карточек  */
+
+  const likeButtons = photoList.querySelectorAll(".card__button");
+  const removeButtons = photoList.querySelectorAll(".card__button-trash");
+
+  /* Навешиваем обработчики событий на книпки с лайками  */
+
+  likeButtons.forEach((item) => {
+    item.addEventListener("click", function (evt) {
+      const eventTarget = evt.target;
+      openClose(eventTarget, "card__button_type_liked");
+    });
+  });
+
+  /* Навешиваем обработчики событий для кнопок удаления карточек */
+  removeButtons.forEach((item) => {
+    item.addEventListener("click", function (evt) {
+      const eventTarget = evt.target;
+      const cardToRemove = eventTarget.closest(".card");
+      cardToRemove.remove();
+    });
+  });
+}
+
+generateEventListeners();
+
+/* Функция, которая открывает и закрывает модалки. */
+/* В качестве аргументов принимает элемент и класс, который ему нужно присвоить/убрать */
+function openClose(item, itemClass) {
+  item.classList.contains(itemClass)
+    ? item.classList.remove(itemClass)
+    : item.classList.add(itemClass);
 }
 
 /* Функция, которая открывает и заполняет модальное окно c редактированием профиля */
 
 function openFirstPopup() {
-  openClose(firstPopup);
+  openClose(firstPopup, "popup_opened");
   popupName.value = profileName.textContent;
   popupJob.value = profileJob.textContent;
 }
 
 /* Функция, которая открывает модальное окно с добавлением снимков */
 function openSecondPopup() {
-  openClose(secondPopup);
+  openClose(secondPopup, "popup_opened");
 }
 
 /* Функция, которая сохраняет введённые пользователем данные в модальном окне c редактированием профиля */
@@ -102,7 +133,7 @@ function editSubmitHandler(evt) {
   profileName.textContent = editedName;
   profileJob.textContent = editedJob;
 
-  openClose(firstPopup);
+  openClose(firstPopup, "popup_opened");
 }
 
 /* Функция, которая сохраняет введённые пользователем данные в модальном окне с добавлением фото */
@@ -119,39 +150,32 @@ function addSubmitHandler(evt) {
   popupLink.value = "";
   popupPlace.value = "";
 
-  openClose(secondPopup);
+  generateEventListeners();
+
+  openClose(secondPopup, "popup_opened");
 }
 
 /* Поле экспериментов*/
 
-loadCards();
+/* Конец поля для экспериментов*/
 
+/* Обработчик события для кнопки редактирования */
 editButton.addEventListener("click", openFirstPopup);
-addButton.addEventListener("click", openSecondPopup);
+
+/* Обработчик события для сохранения модального окна с редактированием данных  */
 formEditProfile.addEventListener("submit", editSubmitHandler);
+
+/* Обработчик события для кнопки добавления снимков */
+addButton.addEventListener("click", openSecondPopup);
+
+/* Обработчик события для сохранения модального окна с добавлением снимков */
 formAddPlace.addEventListener("submit", addSubmitHandler);
 
-/* Обработчики событий для кнопок, закрывающих модалки */
+/* Обработчики событий для кнопок, закрывающих модальные окна */
 cancelButtons.forEach((item) => {
   item.addEventListener("click", function (evt) {
     const eventTarget = evt.target;
     const popup = eventTarget.parentElement.parentElement;
-
-    return openClose(popup);
-  });
-});
-
-/* Переменная, в которой храним для лайки */
-const likeButtons = photoList.querySelectorAll(".card__button");
-
-/* Обработчик события для лайков  */ 
-
-likeButtons.forEach((item) => {
-  item.addEventListener("click", function (evt) {
-    const eventTarget = evt.target;
-
-    eventTarget.classList.contains("card__button_type_liked")
-      ? eventTarget.classList.remove("card__button_type_liked")
-      : eventTarget.classList.add("card__button_type_liked");
+    openClose(popup, "popup_opened");
   });
 });
