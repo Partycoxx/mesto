@@ -11,22 +11,27 @@ const editButton = content.querySelector(".profile__edit-button");
 const addButton = content.querySelector(".profile__add-button");
 const cancelButtons = document.querySelectorAll(".popup__close-button");
 
-/* Выбор первой формы и её полей */
+/* Выбор формы и её полей для модального окна с редактированием профиля */
 
-const firstPopup = popupWindows[0];
-const formEditProfile = firstPopup.querySelector(".popup__form");
-const popupName = firstPopup.querySelector(".popup__input_type_name");
-const popupJob = firstPopup.querySelector(".popup__input_type_about");
-
-/* Выбор второй формы и её полей */
-const secondPopup = popupWindows[1];
-const formAddPlace = secondPopup.querySelector(".popup__form");
-const popupPlace = secondPopup.querySelector(".popup__input_type_place");
-const popupLink = secondPopup.querySelector(".popup__input_type_link");
+const modalEditProfile = popupWindows[0];
+const formEditProfile = modalEditProfile.querySelector(".popup__form");
+const popupName = modalEditProfile.querySelector(".popup__input_type_name");
+const popupJob = modalEditProfile.querySelector(".popup__input_type_about");
 
 /* Выбор имени пользователя и его рода деятельности */
 let profileName = content.querySelector(".profile__title");
 let profileJob = content.querySelector(".profile__subtitle");
+
+/* Выбор формы и её полей для модального окна с добавлением картиочки */
+const modalAddPlace = popupWindows[1];
+const formAddPlace = modalAddPlace.querySelector(".popup__form");
+const popupPlace = modalAddPlace.querySelector(".popup__input_type_place");
+const popupLink = modalAddPlace.querySelector(".popup__input_type_link");
+
+/* Выбор модального окна с изображением и его атрибутов */
+const modalImage = popupWindows[2];
+const image = modalImage.querySelector(".popup__image");
+let caption = modalImage.querySelector(".popup__capture");
 
 /* Переменная, в которой храним массивы с названиями городов и ссылками на фото*/
 
@@ -67,39 +72,38 @@ function loadCards() {
     newItem.querySelector(".card__image").alt = `На фото: ${elem.name}`;
     newItem.querySelector(".card__heading").textContent = elem.name;
 
+    generateEventListeners(newItem);
+
     photoList.append(newItem);
   });
 }
 
 loadCards();
 
-/* Функция, которая добавляет обработчики событий */
-function generateEventListeners() {
-  /* Переменные, в которых хранятся элементы карточек  */
+/* Функция, которая добавляет карточкам обработчики событий */
+function generateEventListeners(arg) {
 
-  const likeButtons = photoList.querySelectorAll(".card__button");
-  const removeButtons = photoList.querySelectorAll(".card__button-trash");
+  /* На открытие фото в полном разрешении */
+  arg.querySelector(".card__image").addEventListener("click", function (evt) {
+   const eventTarget = evt.target;
+   image.src = eventTarget.src;
+   image.alt = eventTarget.alt;
+   caption.textContent = eventTarget.nextElementSibling.firstElementChild.textContent;
+   openClose(modalImage, "popup_opened");
+  }) 
 
-  /* Навешиваем обработчики событий на книпки с лайками  */
-
-  likeButtons.forEach((item) => {
-    item.addEventListener("click", function (evt) {
-      const eventTarget = evt.target;
-      openClose(eventTarget, "card__button_type_liked");
-    });
+  /* На удаление фото*/
+  arg.querySelector(".card__button-trash").addEventListener("click", function (evt) {
+    evt.target.closest(".card").remove();
   });
 
-  /* Навешиваем обработчики событий для кнопок удаления карточек */
-  removeButtons.forEach((item) => {
-    item.addEventListener("click", function (evt) {
-      const eventTarget = evt.target;
-      const cardToRemove = eventTarget.closest(".card");
-      cardToRemove.remove();
-    });
+  /* На лайк фото */
+  arg.querySelector(".card__button").addEventListener("click", function (evt) {
+    const eventTarget = evt.target;
+    openClose(eventTarget, "card__button_type_liked");
   });
+
 }
-
-generateEventListeners();
 
 /* Функция, которая открывает и закрывает модалки. */
 /* В качестве аргументов принимает элемент и класс, который ему нужно присвоить/убрать */
@@ -110,20 +114,18 @@ function openClose(item, itemClass) {
 }
 
 /* Функция, которая открывает и заполняет модальное окно c редактированием профиля */
-
 function openFirstPopup() {
-  openClose(firstPopup, "popup_opened");
+  openClose(modalEditProfile, "popup_opened");
   popupName.value = profileName.textContent;
   popupJob.value = profileJob.textContent;
 }
 
 /* Функция, которая открывает модальное окно с добавлением снимков */
 function openSecondPopup() {
-  openClose(secondPopup, "popup_opened");
+  openClose(modalAddPlace, "popup_opened");
 }
 
 /* Функция, которая сохраняет введённые пользователем данные в модальном окне c редактированием профиля */
-
 function editSubmitHandler(evt) {
   evt.preventDefault();
 
@@ -133,11 +135,10 @@ function editSubmitHandler(evt) {
   profileName.textContent = editedName;
   profileJob.textContent = editedJob;
 
-  openClose(firstPopup, "popup_opened");
+  openClose(modalEditProfile, "popup_opened");
 }
 
 /* Функция, которая сохраняет введённые пользователем данные в модальном окне с добавлением фото */
-
 function addSubmitHandler(evt) {
   evt.preventDefault();
 
@@ -145,19 +146,15 @@ function addSubmitHandler(evt) {
   newPlace.querySelector(".card__image").src = popupLink.value;
   newPlace.querySelector(".card__heading").textContent = popupPlace.value;
 
+  generateEventListeners(newPlace);
+
   photoList.prepend(newPlace);
 
   popupLink.value = "";
   popupPlace.value = "";
 
-  generateEventListeners();
-
-  openClose(secondPopup, "popup_opened");
+  openClose(modalAddPlace, "popup_opened");
 }
-
-/* Поле экспериментов*/
-
-/* Конец поля для экспериментов*/
 
 /* Обработчик события для кнопки редактирования */
 editButton.addEventListener("click", openFirstPopup);

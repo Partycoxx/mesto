@@ -1,8 +1,13 @@
 @import url(./__container/popup__container.css);
+@import url(./__container/_type/popup__container_type_image.css);
+@import url(./__container/_type/popup__container_type_modal.css);
 @import url(./__heading/popup__heading.css);
 @import url(./__input/popup__input.css);
 @import url(./__close-button/popup__close-button.css);
+@import url(./__close-button/_type/popup__close-button_type_image.css);
 @import url(./__save-button/popup__save-button.css);
+@import url(./__image/popup__image.css);
+@import url(./__capture/popup__capture.css);
 
 .popup {
   position: fixed;
