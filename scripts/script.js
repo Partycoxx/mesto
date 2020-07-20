@@ -108,9 +108,7 @@ function generateEventListeners(arg) {
 /* Функция, которая открывает и закрывает модалки. */
 /* В качестве аргументов принимает элемент и класс, который ему нужно присвоить/убрать */
 function openClose(item, itemClass) {
-  item.classList.contains(itemClass)
-    ? item.classList.remove(itemClass)
-    : item.classList.add(itemClass);
+  item.classList.toggle(itemClass);
 }
 
 /* Функция, которая открывает и заполняет модальное окно c редактированием профиля */
