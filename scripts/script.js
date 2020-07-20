@@ -19,8 +19,8 @@ const popupName = modalEditProfile.querySelector(".popup__input_type_name");
 const popupJob = modalEditProfile.querySelector(".popup__input_type_about");
 
 /* Выбор имени пользователя и его рода деятельности */
-let profileName = content.querySelector(".profile__title");
-let profileJob = content.querySelector(".profile__subtitle");
+const profileName = content.querySelector(".profile__title");
+const profileJob = content.querySelector(".profile__subtitle");
 
 /* Выбор формы и её полей для модального окна с добавлением картиочки */
 const modalAddPlace = popupWindows[1];
@@ -31,7 +31,7 @@ const popupLink = modalAddPlace.querySelector(".popup__input_type_link");
 /* Выбор модального окна с изображением и его атрибутов */
 const modalImage = popupWindows[2];
 const image = modalImage.querySelector(".popup__image");
-let caption = modalImage.querySelector(".popup__capture");
+const caption = modalImage.querySelector(".popup__capture");
 
 /* Переменная, в которой храним массивы с названиями городов и ссылками на фото*/
 
@@ -66,13 +66,13 @@ const initialCards = [
 
 function loadCards() {
   initialCards.map((elem) => {
-    let newItem = cardTemplate.cloneNode(true);
+    const newItem = cardTemplate.cloneNode(true);
 
     newItem.querySelector(".card__image").src = elem.link;
     newItem.querySelector(".card__image").alt = `На фото: ${elem.name}`;
     newItem.querySelector(".card__heading").textContent = elem.name;
 
-    generateEventListeners(newItem);
+    generateCardListeners(newItem);
 
     photoList.append(newItem);
   });
@@ -81,7 +81,7 @@ function loadCards() {
 loadCards();
 
 /* Функция, которая добавляет карточкам обработчики событий */
-function generateEventListeners(arg) {
+function generateCardListeners(arg) {
 
   /* На открытие фото в полном разрешении */
   arg.querySelector(".card__image").addEventListener("click", function (evt) {
@@ -112,23 +112,23 @@ function openClose(item, itemClass) {
 }
 
 /* Функция, которая открывает и заполняет модальное окно c редактированием профиля */
-function openFirstPopup() {
+function editProfileData() {
   openClose(modalEditProfile, "popup_opened");
   popupName.value = profileName.textContent;
   popupJob.value = profileJob.textContent;
 }
 
 /* Функция, которая открывает модальное окно с добавлением снимков */
-function openSecondPopup() {
+function addNewCard() {
   openClose(modalAddPlace, "popup_opened");
 }
 
 /* Функция, которая сохраняет введённые пользователем данные в модальном окне c редактированием профиля */
-function editSubmitHandler(evt) {
+function saveProfileData(evt) {
   evt.preventDefault();
 
-  let editedName = popupName.value;
-  let editedJob = popupJob.value;
+  const editedName = popupName.value;
+  const editedJob = popupJob.value;
 
   profileName.textContent = editedName;
   profileJob.textContent = editedJob;
@@ -137,14 +137,14 @@ function editSubmitHandler(evt) {
 }
 
 /* Функция, которая сохраняет введённые пользователем данные в модальном окне с добавлением фото */
-function addSubmitHandler(evt) {
+function saveNewCard(evt) {
   evt.preventDefault();
 
-  let newPlace = cardTemplate.cloneNode(true);
+  const newPlace = cardTemplate.cloneNode(true);
   newPlace.querySelector(".card__image").src = popupLink.value;
   newPlace.querySelector(".card__heading").textContent = popupPlace.value;
 
-  generateEventListeners(newPlace);
+  generateCardListeners(newPlace);
 
   photoList.prepend(newPlace);
 
@@ -155,16 +155,16 @@ function addSubmitHandler(evt) {
 }
 
 /* Обработчик события для кнопки редактирования */
-editButton.addEventListener("click", openFirstPopup);
+editButton.addEventListener("click", editProfileData);
 
 /* Обработчик события для сохранения модального окна с редактированием данных  */
-formEditProfile.addEventListener("submit", editSubmitHandler);
+formEditProfile.addEventListener("submit", saveProfileData);
 
 /* Обработчик события для кнопки добавления снимков */
-addButton.addEventListener("click", openSecondPopup);
+addButton.addEventListener("click", addNewCard);
 
 /* Обработчик события для сохранения модального окна с добавлением снимков */
-formAddPlace.addEventListener("submit", addSubmitHandler);
+formAddPlace.addEventListener("submit", saveNewCard);
 
 /* Обработчики событий для кнопок, закрывающих модальные окна */
 cancelButtons.forEach((item) => {
