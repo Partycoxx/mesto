@@ -1,25 +1,21 @@
 .popup__close-button {
-    color: #fff;
-    background-color: #000;
-    border: none;
-    width: 40.7px;
-    height: 40.7px;
-    background-image: url(../../../images/icons/close_button.svg);
-    background-color: rgba(0, 0, 0, 0);
-    position: absolute;
-    top: -40px;
-    left: 430px;
+  color: #fff;
+  background-color: #000;
+  border: none;
+  width: 40.7px;
+  height: 40.7px;
+  background-image: url(../../../images/icons/close_button.svg);
+  background-color: rgba(0, 0, 0, 0);
+  position: absolute;
+  top: -12%;
+  left: 100%;
+}
+
+@media screen and (max-width: 382px) {
+  .popup__close-button {
+    width: 30px;
+    height: 30px;
+    top: -10%;
+    left: 101%;
   }
-  
-  @media screen and (max-width: 566px) {
-    .popup__close-button {
-      left: 300px;
-    }
-  }
-  
-  @media screen and (max-width: 382px) {
-    .popup__close-button {
-      left: 244px;
-      top: -44px;
-    }
-  }
+}
