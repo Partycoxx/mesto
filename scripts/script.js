@@ -1,5 +1,4 @@
 const content = document.querySelector(".page");
-const popupWindows = document.querySelectorAll(".popup");
 
 /* Выбор списка с фото */
 
@@ -13,23 +12,23 @@ const cancelButtons = document.querySelectorAll(".popup__close-button");
 
 /* Выбор формы и её полей для модального окна с редактированием профиля */
 
-const modalEditProfile = popupWindows[0];
-const formEditProfile = modalEditProfile.querySelector(".popup__form");
-const popupName = modalEditProfile.querySelector(".popup__input_type_name");
-const popupJob = modalEditProfile.querySelector(".popup__input_type_about");
+const popupEditProfile = document.querySelector('.popup-edit-profile');
+const formEditProfile = popupEditProfile.querySelector(".popup__form");
+const popupName = popupEditProfile.querySelector(".popup__input_type_name");
+const popupJob = popupEditProfile.querySelector(".popup__input_type_about");
 
 /* Выбор имени пользователя и его рода деятельности */
 const profileName = content.querySelector(".profile__title");
 const profileJob = content.querySelector(".profile__subtitle");
 
 /* Выбор формы и её полей для модального окна с добавлением картиочки */
-const modalAddPlace = popupWindows[1];
-const formAddPlace = modalAddPlace.querySelector(".popup__form");
-const popupPlace = modalAddPlace.querySelector(".popup__input_type_place");
-const popupLink = modalAddPlace.querySelector(".popup__input_type_link");
+const popupAddPlace = document.querySelector('.popup-add-place');
+const formAddPlace = popupAddPlace.querySelector(".popup__form");
+const popupPlace = popupAddPlace.querySelector(".popup__input_type_place");
+const popupLink = popupAddPlace.querySelector(".popup__input_type_link");
 
 /* Выбор модального окна с изображением и его атрибутов */
-const modalImage = popupWindows[2];
+const modalImage = document.querySelector('.popup-full-image');
 const image = modalImage.querySelector(".popup__image");
 const caption = modalImage.querySelector(".popup__capture");
 
@@ -62,9 +61,9 @@ const initialCards = [
   },
 ];
 
-/* Функция, которая загружает карточки при загрузке страницы */
+/* Функция, которая создаёт карточки */
 
-function loadCards() {
+function createCards() {
   initialCards.map((elem) => {
     const newItem = cardTemplate.cloneNode(true);
 
@@ -73,12 +72,17 @@ function loadCards() {
     newItem.querySelector(".card__heading").textContent = elem.name;
 
     generateCardListeners(newItem);
-
-    photoList.append(newItem);
+    loadCards(newItem);    
   });
 }
 
-loadCards();
+/* Функция, которая загружает карточки на страницу */
+
+function loadCards(arg) {
+  photoList.append(arg);
+}
+
+createCards();
 
 /* Функция, которая добавляет карточкам обработчики событий */
 function generateCardListeners(arg) {
@@ -89,7 +93,7 @@ function generateCardListeners(arg) {
    image.src = eventTarget.src;
    image.alt = eventTarget.alt;
    caption.textContent = eventTarget.nextElementSibling.firstElementChild.textContent;
-   openClose(modalImage, "popup_opened");
+   togglePopup(modalImage, "popup_opened");
   }) 
 
   /* На удаление фото*/
@@ -100,27 +104,22 @@ function generateCardListeners(arg) {
   /* На лайк фото */
   arg.querySelector(".card__button").addEventListener("click", function (evt) {
     const eventTarget = evt.target;
-    openClose(eventTarget, "card__button_type_liked");
+    togglePopup(eventTarget, "card__button_type_liked");
   });
 
 }
 
 /* Функция, которая открывает и закрывает модалки. */
 /* В качестве аргументов принимает элемент и класс, который ему нужно присвоить/убрать */
-function openClose(item, itemClass) {
+function togglePopup(item, itemClass) {
   item.classList.toggle(itemClass);
 }
 
 /* Функция, которая открывает и заполняет модальное окно c редактированием профиля */
 function editProfileData() {
-  openClose(modalEditProfile, "popup_opened");
+  togglePopup(popupEditProfile, "popup_opened");
   popupName.value = profileName.textContent;
   popupJob.value = profileJob.textContent;
-}
-
-/* Функция, которая открывает модальное окно с добавлением снимков */
-function addNewCard() {
-  openClose(modalAddPlace, "popup_opened");
 }
 
 /* Функция, которая сохраняет введённые пользователем данные в модальном окне c редактированием профиля */
@@ -133,7 +132,7 @@ function saveProfileData(evt) {
   profileName.textContent = editedName;
   profileJob.textContent = editedJob;
 
-  openClose(modalEditProfile, "popup_opened");
+  togglePopup(popupEditProfile, "popup_opened");
 }
 
 /* Функция, которая сохраняет введённые пользователем данные в модальном окне с добавлением фото */
@@ -151,7 +150,7 @@ function saveNewCard(evt) {
   popupLink.value = "";
   popupPlace.value = "";
 
-  openClose(modalAddPlace, "popup_opened");
+  togglePopup(popupAddPlace, "popup_opened");
 }
 
 /* Обработчик события для кнопки редактирования */
@@ -161,7 +160,7 @@ editButton.addEventListener("click", editProfileData);
 formEditProfile.addEventListener("submit", saveProfileData);
 
 /* Обработчик события для кнопки добавления снимков */
-addButton.addEventListener("click", addNewCard);
+addButton.addEventListener("click", () => togglePopup(popupAddPlace, "popup_opened"));
 
 /* Обработчик события для сохранения модального окна с добавлением снимков */
 formAddPlace.addEventListener("submit", saveNewCard);
@@ -171,6 +170,6 @@ cancelButtons.forEach((item) => {
   item.addEventListener("click", function (evt) {
     const eventTarget = evt.target;
     const popup = eventTarget.parentElement.parentElement;
-    openClose(popup, "popup_opened");
+    togglePopup(popup, "popup_opened");
   });
 });
