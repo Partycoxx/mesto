@@ -3,9 +3,9 @@
   font-weight: 500;
   font-size: 42px;
   line-height: 1.33;
-  margin: 0;
+  margin: 0 17px 0 0;
   text-overflow: ellipsis;
-  width: 293px;
+  max-width: 293px;
   overflow: hidden;
   white-space: nowrap;
 }
@@ -21,6 +21,6 @@
   .profile__title {
     font-size: 27px;
     line-height: 56px;
-    width: 190px;
+    margin: 0 8px 0 0;
   }
 }

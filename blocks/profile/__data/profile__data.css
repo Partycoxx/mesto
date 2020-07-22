@@ -3,12 +3,12 @@
   max-width: 486px;
   justify-content: space-between;
   width: 100%;
+  align-items: center;
 }
 
 @media screen and (max-width: 665px) {
 
   .profile__data {
     flex-direction: column;
-    align-items: center;
   }
 }
