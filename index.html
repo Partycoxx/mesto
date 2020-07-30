@@ -41,9 +41,11 @@
             <div class="popup__container popup__container_type_modal">
                 <h2 class="popup__heading">Редактировать профиль</h2>
                 <form class="popup__form" action="#" name="profile-info" method="post">
-                    <input class="popup__input popup__input_type_name" type="text" name="name" placeholder="Кто вы?" required />
+                    <input class="popup__input popup__input_type_name popup__input_type_error" type="text" name="name" placeholder="Кто вы?" required />
+                    <span class="popup__input-error popup__input-error_active">Неверно!</span>
                     <input class="popup__input popup__input_type_about" type="text" name="about" placeholder="Чем вы занимаетесь?" required />
-                    <button class="button popup__save-button" type="submit">
+                    <span class="popup__input-error"></span>
+                    <button class="button popup__save-button popup__save-button_inactive" type="submit">
                         Сохранить
                     </button>
                 </form>
@@ -55,7 +57,9 @@
                 <h2 class="popup__heading">Новое место</h2>
                 <form class="popup__form" action="#" name="profile-info" method="post">
                     <input class="popup__input popup__input_type_place" type="text" name="place" placeholder="Название" required />
+                    <span class="popup__input-error"></span>
                     <input class="popup__input popup__input_type_link" type="text" name="link" placeholder="Ссылка на картинку" required />
+                    <span class="popup__input-error"></span>
                     <button class="button popup__save-button" type="submit">
                         Создать
                     </button>
