@@ -45,7 +45,7 @@
                     <span class="popup__input-error" id="input-name-error"></span>
                     <input class="popup__input popup__input_type_about" id="input-about" type="text" name="about" placeholder="Чем вы занимаетесь?" minlength="2" maxlength="200" required novalidate />
                     <span class="popup__input-error" id="input-about-error"></span>
-                    <button class="button popup__save-button" type="submit">
+                    <button class="button popup__button" type="submit" name="save-button">
                         Сохранить
                     </button>
                 </form>
@@ -60,7 +60,7 @@
                     <span class="popup__input-error" id="input-place-error"></span>
                     <input class="popup__input popup__input_type_link" id="input-link" type="url" name="link" placeholder="Ссылка на картинку" required novalidate />
                     <span class="popup__input-error" id="input-link-error"></span>
-                    <button class="button popup__save-button" type="submit">
+                    <button class="button popup__button" type="submit" name="create-button">
                         Создать
                     </button>
                 </form>
@@ -87,5 +87,6 @@
             </li>
         </template>
         <script src="./scripts/script.js"></script>
+        <script src="scripts/validate.js"></script>
     </body>
 </html>

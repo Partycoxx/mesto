@@ -1,4 +1,4 @@
-.popup__save-button_inactive {
+.popup__button_inactive {
     background-color: transparent;
     color: rgba(0, 0, 0, .2);
     border: solid 1px rgba(0, 0, 0, .2);
@@ -6,6 +6,6 @@
     cursor: auto;
 }
 
-.popup__save-button_inactive:hover {
+.popup__button_inactive:hover {
     background-color: transparent;
   }

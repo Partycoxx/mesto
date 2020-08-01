@@ -1,4 +1,4 @@
-.popup__save-button {
+.popup__button {
   color: #fff;
   background-color: #000;
   border: none;
@@ -12,12 +12,12 @@
   margin: 48.34px 0 0;
 }
 
-.popup__save-button:hover {
+.popup__button:hover {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
 @media screen and (max-width: 382px) {
-  .popup__save_button {
+  .popup__button {
     margin: 0 0 36px;
   }
 }
