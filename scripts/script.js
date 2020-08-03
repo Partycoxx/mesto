@@ -66,6 +66,7 @@ function setCardListeners(card) {
       image.alt = eventTarget.alt;
       caption.textContent = eventTarget.nextElementSibling.firstElementChild.textContent;
       togglePopup(modalImage, "popup_opened");
+      addWindowEventListener();
     } 
     
     // На удаление фото
@@ -119,9 +120,11 @@ function setProfileListeners(profile, popupEditProfile, popupAddPlace) {
   profile.addEventListener("click", function(evt) {
     if (evt.target.classList.contains("profile__edit-button")) {
       togglePopup(popupEditProfile, "popup_opened");
+      addWindowEventListener();
     } 
     else if (evt.target.classList.contains("profile__add-button")) {
       togglePopup(popupAddPlace, "popup_opened");
+      addWindowEventListener();
     }
   })
   }
@@ -165,22 +168,29 @@ function setFormsListeners(forms, popupEditProfile, popupAddPlace, profileName, 
 //Функция, добавляющая обработчики событий для кнопок, закрывающих модальные окна
 function setCloseButtonsListeners(popups) {
   popups.forEach((popupElement) => {
-    popupElement.addEventListener("click", function (evt) {
+    popupElement.addEventListener("mousedown", function (evt) {
       if (evt.target.classList.contains("popup__close-button") || evt.target.classList.contains("popup")) {
         togglePopup(popupElement, "popup_opened");
       }
     });
   });
-  window.addEventListener("keydown", function (evt) {
-    const openedPopup = document.querySelector(".popup_opened");
+}
+
+//Функция, устанавливающая обработчик события окну
+function addWindowEventListener() {
+  window.addEventListener("keydown", closeWindow)
+} 
+
+//Функция, закрывающая модальное окно при нажатии клавиши Esc
+function closeWindow(evt) { 
+  const openedPopup = document.querySelector(".popup_opened");
     if (evt.key === "Escape" && openedPopup != null) {
       togglePopup(openedPopup, "popup_opened");
+      window.removeEventListener("keydown", closeWindow);
     }
-  });
 }
 
 function preparePage() {
-
 createCards(initialCards);
 fillInputs(formEditProfile, profileName, profileJob);
 setProfileListeners(profile, popupEditProfile, popupAddPlace);
@@ -189,3 +199,4 @@ setCloseButtonsListeners(popups);
 }
 
 preparePage();
+
