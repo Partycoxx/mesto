@@ -199,4 +199,3 @@ setCloseButtonsListeners(popups);
 }
 
 preparePage();
-
