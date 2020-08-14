@@ -1,3 +1,6 @@
+import { Card } from "./Card.js";
+export {modalImage, addWindowEventListener}
+
 // Переменная, в которой храним массивы с названиями городов и ссылками на фото*/
 const initialCards = [
   {
@@ -52,36 +55,6 @@ function togglePopup(item, itemClass) {
   item.classList.toggle(itemClass);
 }
 
-// Функция, устанавливюащая карточкам обработчики событий.
-function setCardListeners(card) {
-  card.querySelector(".card").addEventListener("click", function (evt) {
-    const eventTarget = evt.target;
-
-    // На открытие фото в полном разрешении
-    if (eventTarget.classList.contains("card__image")) {
-      const image = modalImage.querySelector(".popup__image");
-      const caption = modalImage.querySelector(".popup__capture");
-
-      image.src = eventTarget.src;
-      image.alt = eventTarget.alt;
-      caption.textContent =
-        eventTarget.nextElementSibling.firstElementChild.textContent;
-      togglePopup(modalImage, "popup_opened");
-      addWindowEventListener();
-    }
-
-    // На удаление фото
-    else if (eventTarget.classList.contains("card__button-trash")) {
-      eventTarget.closest(".card").remove();
-    }
-
-    // На лайк фото
-    else if (eventTarget.classList.contains("card__button")) {
-      togglePopup(eventTarget, "card__button_type_liked");
-    }
-  });
-}
-
 /* Функция, которая добавляет карточки на страницу. В качестве аргументов принимает: 
   — элемент, в который добавляем карточку
   — место добавления относительно существующего контента
@@ -98,23 +71,9 @@ function addCard(parentElem, place, childElem) {
 //Функция, которая преобразует элементы массива в карточки
 function initializeCards(initialCards) {
   initialCards.map((elem) => {
-    const card = createNewCard(elem.name, elem.link);
-    setCardListeners(card);
+    const card = new Card(elem.name, elem.link, "#card-template").generateCard();
     addCard(photoList, "append", card);
   });
-}
-
-// Функция, которая создаёт карточки
-function createNewCard(name, link) {
-  const newCard = cardTemplate.cloneNode(true);
-  const cardImage = newCard.querySelector(".card__image");
-  const cardHeading = newCard.querySelector(".card__heading");
-
-  cardImage.src = link;
-  cardImage.alt = `На фото: ${name}`;
-  cardHeading.textContent = name;
-
-  return newCard;
 }
 
 //Функция, которая заполняет содержимое полей модального окна с редактированием информации при загрузке страницы
@@ -127,10 +86,10 @@ function fillInputs(form, profileName, profileJob) {
 function setProfileListeners(profile, popupEditProfile, popupAddPlace) {
   profile.addEventListener("click", function (evt) {
     if (evt.target.classList.contains("profile__edit-button")) {
-      togglePopup(popupEditProfile, "popup_opened");
+      togglePopup(popupEditProfile, "popup_opened"); 
       addWindowEventListener();
     } else if (evt.target.classList.contains("profile__add-button")) {
-      togglePopup(popupAddPlace, "popup_opened");
+      togglePopup(popupAddPlace, "popup_opened"); 
       addWindowEventListener();
     }
   });
@@ -147,8 +106,7 @@ function saveNewCard(form) {
   const formName = form.place.value;
   const formLink = form.link.value;
 
-  const card = createNewCard(formName, formLink);
-  setCardListeners(card);
+  const card = new Card(formName, formLink, '#card-template').generateCard();
   addCard(photoList, "prepend", card);
 }
 
@@ -161,25 +119,23 @@ function setFormsListeners(forms, popupEditProfile, popupAddPlace, profileName, 
 
       if (evtSubmitter.name === "save-button") {
         saveProfileData(form, profileName, profileJob);
-        togglePopup(popupEditProfile, "popup_opened");
+        togglePopup(popupEditProfile, "popup_opened"); 
       } else if (evtSubmitter.name === "create-button") {
         saveNewCard(form);
         form.reset();
         evtSubmitter.classList.add("popup__button_inactive");
         evtSubmitter.setAttribute("disabled", "true");
-        togglePopup(popupAddPlace, "popup_opened");
+        togglePopup(popupAddPlace, "popup_opened"); 
       }
     });
   });
 }
 
-
 //Функция, добавляющая обработчики событий для кнопок, закрывающих модальные окна
 function setCloseButtonsListeners(popups) {
   popups.forEach((popupElement) => {
     popupElement.addEventListener("mousedown", function (evt) {
-      if (evt.target.classList.contains("popup__close-button") || evt.target.classList.contains("popup")
-      ) {
+      if (evt.target.classList.contains("popup__close-button") || evt.target.classList.contains("popup")) {
         togglePopup(popupElement, "popup_opened");
       }
     });
