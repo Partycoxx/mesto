@@ -9,12 +9,14 @@ class Card {
     this._selector = selector;
   }
   _getTemplate() {
-    const card = document.querySelector(this._selector).content.querySelector(".card").cloneNode(true);
+    const card = document
+      .querySelector(this._selector)
+      .content.querySelector(".card")
+      .cloneNode(true);
     return card;
   }
 
-_handleFullRes() {
-
+  _handleFullRes() {
     const image = modalImage.querySelector(".popup__image");
     const caption = modalImage.querySelector(".popup__capture");
 
@@ -23,22 +25,28 @@ _handleFullRes() {
     caption.textContent = this._heading;
     modalImage.classList.toggle("popup_opened");
     addWindowEventListener();
-}
-
-_handleLikeButton(evt) {
-    evt.target.classList.toggle('card__button_type_liked');
-}
-
-_handleDeleteButton(evt) {
-    evt.target.closest(".card").remove();
-}
-
- _setEventListeners() {
-    this._element.querySelector('.card__image').addEventListener("click", () => this._handleFullRes());
-    this._element.querySelector('.card__button').addEventListener("click", (evt) => this._handleLikeButton(evt));
-    this._element.querySelector('.card__button-trash').addEventListener("click", (evt) => this._handleDeleteButton(evt));
   }
-  
+
+  _handleLikeButton(evt) {
+    evt.target.classList.toggle("card__button_type_liked");
+  }
+
+  _handleDeleteButton(evt) {
+    evt.target.closest(".card").remove();
+  }
+
+  _setEventListeners() {
+    this._element
+      .querySelector(".card__image")
+      .addEventListener("click", () => this._handleFullRes());
+    this._element
+      .querySelector(".card__button")
+      .addEventListener("click", (evt) => this._handleLikeButton(evt));
+    this._element
+      .querySelector(".card__button-trash")
+      .addEventListener("click", (evt) => this._handleDeleteButton(evt));
+  }
+
   generateCard() {
     this._element = this._getTemplate();
 

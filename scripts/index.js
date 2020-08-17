@@ -1,34 +1,7 @@
 import { Card } from "./Card.js";
 import { FormValidator } from "./FormValidator.js";
-export {modalImage, addWindowEventListener};
-
-// Переменная, в которой храним массивы с названиями городов и ссылками на фото*/
-const initialCards = [
-  {
-    name: "Волгоград",
-    link: "./images/photo-grid/volgograd.jpg",
-  },
-  {
-    name: "Челябинск",
-    link: "./images/photo-grid/chelyabinsk.jpg",
-  },
-  {
-    name: "Карелия",
-    link: "./images/photo-grid/karelia.jpg",
-  },
-  {
-    name: "Санкт-Петербург",
-    link: "./images/photo-grid/saint-p.jpg",
-  },
-  {
-    name: "Сочи",
-    link: "./images/photo-grid/sochi.jpg",
-  },
-  {
-    name: "Мурманск",
-    link: "./images/photo-grid/murmansk.jpg",
-  },
-];
+import { initialCards } from "./initialCards.js";
+export { modalImage, addWindowEventListener };
 
 const settings = {
   formSelector: ".popup__form",
@@ -62,6 +35,7 @@ const photoList = document.querySelector(".photo-grid__list");
 — класс, который ему нужно присвоить или убрать */
 function togglePopup(item, itemClass) {
   item.classList.toggle(itemClass);
+  window.removeEventListener("keydown", closeWindow);
 }
 
 /* Функция, которая добавляет карточки на страницу. В качестве аргументов принимает: 
@@ -79,8 +53,12 @@ function addCard(parentElem, place, childElem) {
 
 //Функция, которая преобразует элементы массива в карточки
 function initializeCards(initialCards) {
-  initialCards.map((elem) => {
-    const card = new Card(elem.name, elem.link, "#card-template").generateCard();
+  initialCards.forEach((elem) => {
+    const card = new Card(
+      elem.name,
+      elem.link,
+      "#card-template"
+    ).generateCard();
     addCard(photoList, "append", card);
   });
 }
@@ -95,10 +73,10 @@ function fillInputs(form, profileName, profileJob) {
 function setProfileListeners(profile, popupEditProfile, popupAddPlace) {
   profile.addEventListener("click", function (evt) {
     if (evt.target.classList.contains("profile__edit-button")) {
-      togglePopup(popupEditProfile, "popup_opened"); 
+      togglePopup(popupEditProfile, "popup_opened");
       addWindowEventListener();
     } else if (evt.target.classList.contains("profile__add-button")) {
-      togglePopup(popupAddPlace, "popup_opened"); 
+      togglePopup(popupAddPlace, "popup_opened");
       addWindowEventListener();
     }
   });
@@ -115,31 +93,37 @@ function saveNewCard(form) {
   const formName = form.place.value;
   const formLink = form.link.value;
 
-  const card = new Card(formName, formLink, '#card-template').generateCard();
+  const card = new Card(formName, formLink, "#card-template").generateCard();
   addCard(photoList, "prepend", card);
 }
 
 //Функция, устанавливающая валидацию и обработчики событий для кнопок форм
-function setFormsListeners(forms, settings, popupEditProfile, popupAddPlace, profileName, profileJob) {
+function setFormsListeners(
+  forms,
+  settings,
+  popupEditProfile,
+  popupAddPlace,
+  profileName,
+  profileJob
+) {
   forms.forEach((form) => {
-
     const validatedForm = new FormValidator(settings, form);
     validatedForm.enableValidation();
 
     form.addEventListener("submit", function (evt) {
       evt.preventDefault();
 
-     const evtSubmitter = evt.submitter;
+      const evtSubmitter = evt.submitter;
 
       if (evtSubmitter.name === "save-button") {
         saveProfileData(form, profileName, profileJob);
-        togglePopup(popupEditProfile, "popup_opened"); 
+        togglePopup(popupEditProfile, "popup_opened");
       } else if (evtSubmitter.name === "create-button") {
         saveNewCard(form);
         form.reset();
         evtSubmitter.classList.add("popup__button_inactive");
         evtSubmitter.setAttribute("disabled", "true");
-        togglePopup(popupAddPlace, "popup_opened"); 
+        togglePopup(popupAddPlace, "popup_opened");
       }
     });
   });
@@ -149,7 +133,10 @@ function setFormsListeners(forms, settings, popupEditProfile, popupAddPlace, pro
 function setCloseButtonsListeners(popups) {
   popups.forEach((popupElement) => {
     popupElement.addEventListener("mousedown", function (evt) {
-      if (evt.target.classList.contains("popup__close-button") || evt.target.classList.contains("popup")) {
+      if (
+        evt.target.classList.contains("popup__close-button") ||
+        evt.target.classList.contains("popup")
+      ) {
         togglePopup(popupElement, "popup_opened");
       }
     });
@@ -166,7 +153,6 @@ function closeWindow(evt) {
   const openedPopup = document.querySelector(".popup_opened");
   if (evt.key === "Escape" && openedPopup != null) {
     togglePopup(openedPopup, "popup_opened");
-    window.removeEventListener("keydown", closeWindow);
   }
 }
 
@@ -174,8 +160,15 @@ function preparePage() {
   initializeCards(initialCards);
   fillInputs(formEditProfile, profileName, profileJob);
   setProfileListeners(profile, popupEditProfile, popupAddPlace);
-  setFormsListeners(forms, settings, popupEditProfile, popupAddPlace, profileName, profileJob);
+  setFormsListeners(
+    forms,
+    settings,
+    popupEditProfile,
+    popupAddPlace,
+    profileName,
+    profileJob
+  );
   setCloseButtonsListeners(popups);
-  }
+}
 
 preparePage();
