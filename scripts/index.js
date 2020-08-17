@@ -1,5 +1,6 @@
 import { Card } from "./Card.js";
-export {modalImage, addWindowEventListener}
+import { FormValidator } from "./FormValidator.js";
+export {modalImage, addWindowEventListener};
 
 // Переменная, в которой храним массивы с названиями городов и ссылками на фото*/
 const initialCards = [
@@ -29,6 +30,15 @@ const initialCards = [
   },
 ];
 
+const settings = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "popup__button_inactive",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__input-error_active",
+};
+
 //Выбор попапов
 const popups = Array.from(document.querySelectorAll(".popup"));
 const popupEditProfile = document.querySelector(".popup-edit-profile");
@@ -46,7 +56,6 @@ const profileJob = profile.querySelector(".profile__subtitle");
 
 //Выбор списка с карточками
 const photoList = document.querySelector(".photo-grid__list");
-const cardTemplate = document.querySelector("#card-template").content;
 
 /* Функция, которая открывает и закрывает модалки. В качестве аргументов принимает
 — элемент, над которым производим действие;
@@ -110,12 +119,17 @@ function saveNewCard(form) {
   addCard(photoList, "prepend", card);
 }
 
-//Функция, устанавливающая обработчики событий для кнопок форм
-function setFormsListeners(forms, popupEditProfile, popupAddPlace, profileName, profileJob) {
+//Функция, устанавливающая валидацию и обработчики событий для кнопок форм
+function setFormsListeners(forms, settings, popupEditProfile, popupAddPlace, profileName, profileJob) {
   forms.forEach((form) => {
+
+    const validatedForm = new FormValidator(settings, form);
+    validatedForm.enableValidation();
+
     form.addEventListener("submit", function (evt) {
       evt.preventDefault();
-      const evtSubmitter = evt.submitter;
+
+     const evtSubmitter = evt.submitter;
 
       if (evtSubmitter.name === "save-button") {
         saveProfileData(form, profileName, profileJob);
@@ -160,8 +174,8 @@ function preparePage() {
   initializeCards(initialCards);
   fillInputs(formEditProfile, profileName, profileJob);
   setProfileListeners(profile, popupEditProfile, popupAddPlace);
-  setFormsListeners(forms, popupEditProfile, popupAddPlace, profileName, profileJob);
+  setFormsListeners(forms, settings, popupEditProfile, popupAddPlace, profileName, profileJob);
   setCloseButtonsListeners(popups);
-}
+  }
 
 preparePage();
