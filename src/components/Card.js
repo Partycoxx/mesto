@@ -1,6 +1,6 @@
 export { Card };
 
-import { modalImage, addWindowEventListener } from "./index.js";
+import { modalImage, addWindowEventListener } from "../pages/index.js";
 
 class Card {
   constructor(heading, imgLink, selector) {
@@ -8,6 +8,7 @@ class Card {
     this._imgLink = imgLink;
     this._selector = selector;
   }
+  
   _getTemplate() {
     const card = document
       .querySelector(this._selector)
