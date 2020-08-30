@@ -1,10 +1,9 @@
-import { modalImage, addWindowEventListener } from "../pages/index.js";
-
 export default class Card {
-  constructor(heading, imgLink, selector) {
+  constructor({handleCardClick}, heading, imgLink, selector) {
     this._heading = heading;
     this._imgLink = imgLink;
     this._selector = selector;
+    this._handleCardClick = handleCardClick;
   }
 
   _getTemplate() {
@@ -13,17 +12,6 @@ export default class Card {
       .content.querySelector(".card")
       .cloneNode(true);
     return card;
-  }
-
-  _handleFullRes() {
-    const image = modalImage.querySelector(".popup__image");
-    const caption = modalImage.querySelector(".popup__capture");
-
-    image.src = this._imgLink;
-    image.alt = this._heading;
-    caption.textContent = this._heading;
-    modalImage.classList.toggle("popup_opened");
-    addWindowEventListener();
   }
 
   _handleLikeButton(evt) {
@@ -37,7 +25,7 @@ export default class Card {
   _setEventListeners() {
     this._element
       .querySelector(".card__image")
-      .addEventListener("click", () => this._handleFullRes());
+      .addEventListener("click", () => this._handleCardClick(this._heading, this._imgLink));
     this._element
       .querySelector(".card__button")
       .addEventListener("click", (evt) => this._handleLikeButton(evt));
@@ -56,7 +44,10 @@ export default class Card {
     image.alt = `На фото: ${this._heading}`;
     heading.textContent = this._heading;
 
+
     this._setEventListeners();
+
+    
 
     return this._element;
   }

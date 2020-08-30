@@ -1,8 +1,9 @@
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
+import Popup from "../components/Popup.js";
+import PopupWithImage from "../components/PopupWithImage.js";
 import { initialCards } from "../components/initialCards.js";
-export { modalImage, addWindowEventListener };
 
 const settings = {
   formSelector: ".popup__form",
@@ -34,10 +35,10 @@ const photoList = document.querySelector(".photo-grid__list");
 /* Функция, которая открывает и закрывает модалки. В качестве аргументов принимает
 — элемент, над которым производим действие;
 — класс, который ему нужно присвоить или убрать */
-function togglePopup(item, itemClass) {
+/*function togglePopup(item, itemClass) {
   item.classList.toggle(itemClass);
-  window.removeEventListener("keydown", closeWindow);
-}
+  //window.removeEventListener("keydown", closeWindow);
+} */
 
 /* Функция, которая добавляет карточки на страницу. В качестве аргументов принимает: 
   — элемент, в который добавляем карточку
@@ -69,7 +70,12 @@ function initializeCards(initialCards) {
 const cardList = new Section({
   items: initialCards,
   renderer: (elem) => {
-    const card = new Card(elem.name, elem.link, "#card-template").generateCard();
+    const card = new Card({
+      handleCardClick: (heading, imgLink) => {
+        const popup = new PopupWithImage(".popup-full-image", imgLink, heading);
+        popup.open();
+      }
+    }, elem.name, elem.link, "#card-template").generateCard();
 
     cardList.addItem(card);
   }
@@ -88,10 +94,10 @@ function setProfileListeners(profile, popupEditProfile, popupAddPlace) {
   profile.addEventListener("click", function (evt) {
     if (evt.target.classList.contains("profile__edit-button")) {
       togglePopup(popupEditProfile, "popup_opened");
-      addWindowEventListener();
+      //addWindowEventListener();
     } else if (evt.target.classList.contains("profile__add-button")) {
       togglePopup(popupAddPlace, "popup_opened");
-      addWindowEventListener();
+      //addWindowEventListener();
     }
   });
 }
@@ -143,6 +149,7 @@ function setFormsListeners(
   });
 }
 
+/*
 //Функция, добавляющая обработчики событий для кнопок, закрывающих модальные окна
 function setCloseButtonsListeners(popups) {
   popups.forEach((popupElement) => {
@@ -156,11 +163,13 @@ function setCloseButtonsListeners(popups) {
     });
   });
 }
-
+*/
+/*
 //Функция, устанавливающая обработчик события окну
 function addWindowEventListener() {
   window.addEventListener("keydown", closeWindow);
 }
+
 
 //Функция, закрывающая модальное окно при нажатии клавиши Esc
 function closeWindow(evt) {
@@ -169,6 +178,7 @@ function closeWindow(evt) {
     togglePopup(openedPopup, "popup_opened");
   }
 }
+*/
 
 function preparePage() {
   //initializeCards(initialCards);
@@ -182,7 +192,7 @@ function preparePage() {
     profileName,
     profileJob
   );
-  setCloseButtonsListeners(popups);
+  //setCloseButtonsListeners(popups);
 }
 
 preparePage();
