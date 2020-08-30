@@ -1,14 +1,12 @@
-export { Card };
-
 import { modalImage, addWindowEventListener } from "../pages/index.js";
 
-class Card {
+export default class Card {
   constructor(heading, imgLink, selector) {
     this._heading = heading;
     this._imgLink = imgLink;
     this._selector = selector;
   }
-  
+
   _getTemplate() {
     const card = document
       .querySelector(this._selector)

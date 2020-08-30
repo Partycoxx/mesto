@@ -1,5 +1,6 @@
-import { Card } from "../components/Card.js";
-import { FormValidator } from "../components/FormValidator.js";
+import Card from "../components/Card.js";
+import FormValidator from "../components/FormValidator.js";
+import Section from "../components/Section.js";
 import { initialCards } from "../components/initialCards.js";
 export { modalImage, addWindowEventListener };
 
@@ -51,6 +52,7 @@ function addCard(parentElem, place, childElem) {
   }
 }
 
+/*
 //Функция, которая преобразует элементы массива в карточки
 function initializeCards(initialCards) {
   initialCards.forEach((elem) => {
@@ -62,6 +64,18 @@ function initializeCards(initialCards) {
     addCard(photoList, "append", card);
   });
 }
+*/
+
+const cardList = new Section({
+  items: initialCards,
+  renderer: (elem) => {
+    const card = new Card(elem.name, elem.link, "#card-template").generateCard();
+
+    cardList.addItem(card);
+  }
+}, photoList);
+
+cardList.renderItems();
 
 //Функция, которая заполняет содержимое полей модального окна с редактированием информации при загрузке страницы
 function fillInputs(form, profileName, profileJob) {
@@ -157,7 +171,7 @@ function closeWindow(evt) {
 }
 
 function preparePage() {
-  initializeCards(initialCards);
+  //initializeCards(initialCards);
   fillInputs(formEditProfile, profileName, profileJob);
   setProfileListeners(profile, popupEditProfile, popupAddPlace);
   setFormsListeners(
