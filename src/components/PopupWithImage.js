@@ -16,6 +16,5 @@ export default class PopupWithImage extends Popup {
         image.src = this._imageLink;
         image.alt = this._imageHeading;
         caption.textContent = this._imageHeading;
-        //addWindowEventListener();
 }
 }
