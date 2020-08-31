@@ -5,13 +5,11 @@ export default class PopupWithForm extends Popup {
     super(popupSelector);
     this._handleFormSubmit = handleFormSubmit;
     this._form = this._popup.querySelector(".popup__form");
-    this._toggleSubmitListener = this._toggleSubmitListener.bind(this);
     this._button = this._popup.querySelector(".popup__button");
+    this._inputList = this._popup.querySelectorAll(".popup__input");
   }
 
   _getInputValues() {
-    this._inputList = this._popup.querySelectorAll(".popup__input");
-
     this._formValues = {};
     this._inputList.forEach(
       (input) => (this._formValues[input.name] = input.value)
@@ -20,26 +18,26 @@ export default class PopupWithForm extends Popup {
     return this._formValues;
   }
 
-  _toggleSubmitListener(evt) {
-    evt.preventDefault();
-
-    this._handleFormSubmit(this._getInputValues());
-
-    this._form.reset();
+  setInputValues(obj) {
+    this._inputList[0].value = obj.name;
+    this._inputList[1].value = obj.occupation;
   }
 
   setEventListener() {
     super.setEventListener();
 
-    this._popup.addEventListener("submit", this._toggleSubmitListener);
+    this._popup.addEventListener("submit", (evt) => {
+      evt.preventDefault();
+
+      this._handleFormSubmit(this._getInputValues());
+
+      this._form.reset();
+    });
   }
 
   close() {
     super.close();
     this._button.classList.add("popup__button_inactive");
     this._button.setAttribute("disabled", "true");
-
-    this._popup.removeEventListener("submit", this._toggleSubmitListener);
-    this._form.reset();
   }
 }

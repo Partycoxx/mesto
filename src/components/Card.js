@@ -1,5 +1,5 @@
 export default class Card {
-  constructor({handleCardClick}, heading, imgLink, selector) {
+  constructor({handleCardClick, heading, imgLink}, selector) {
     this._heading = heading;
     this._imgLink = imgLink;
     this._selector = selector;
