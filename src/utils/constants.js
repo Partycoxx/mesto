@@ -1,27 +1,35 @@
+import volgograd from '../images/photo-grid/volgograd.jpg';
+import chelyabinsk from '../images/photo-grid/chelyabinsk.jpg';
+import karelia from '../images/photo-grid/karelia.jpg';
+import saintPetersburg from '../images/photo-grid/saint-p.jpg';
+import sochi from '../images/photo-grid/sochi.jpg';
+import murmansk from '../images/photo-grid/murmansk.jpg';
+
+
 const initialCards = [
     {
       name: "Волгоград",
-      link: "./images/photo-grid/volgograd.jpg",
+      link: volgograd,
     },
     {
       name: "Челябинск",
-      link: "./images/photo-grid/chelyabinsk.jpg",
+      link: chelyabinsk,
     },
     {
       name: "Карелия",
-      link: "./images/photo-grid/karelia.jpg",
+      link: karelia,
     },
     {
       name: "Санкт-Петербург",
-      link: "./images/photo-grid/saint-p.jpg",
+      link: saintPetersburg,
     },
     {
       name: "Сочи",
-      link: "./images/photo-grid/sochi.jpg",
+      link: sochi,
     },
     {
       name: "Мурманск",
-      link: "./images/photo-grid/murmansk.jpg",
+      link: murmansk,
     },
   ];
 
