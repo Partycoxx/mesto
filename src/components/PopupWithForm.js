@@ -28,10 +28,7 @@ export default class PopupWithForm extends Popup {
 
     this._popup.addEventListener("submit", (evt) => {
       evt.preventDefault();
-
       this._handleFormSubmit(this._getInputValues());
-
-      this._form.reset();
     });
   }
 
@@ -40,4 +37,9 @@ export default class PopupWithForm extends Popup {
     this._button.classList.add("popup__button_inactive");
     this._button.setAttribute("disabled", "true");
   }
+
+  clearInputValues() {
+    this._form.reset();
+  }
+
 }

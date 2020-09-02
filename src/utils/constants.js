@@ -43,8 +43,10 @@ const initialCards = [
   };
   
   const forms = Array.from(document.querySelectorAll(".popup__form"));
+  const formEditPopup = forms[0];
+  const formAddPopup = forms[1];
   const photoList = document.querySelector(".photo-grid__list");
   const addButton = document.querySelector(".profile__add-button");
   const editButton = document.querySelector(".profile__edit-button");
 
-  export { initialCards, settings, forms, photoList, addButton, editButton }
+  export { initialCards, settings, formEditPopup, formAddPopup, photoList, addButton, editButton }

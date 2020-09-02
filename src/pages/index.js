@@ -1,36 +1,47 @@
 import "./index.css";
-import Card from "../components/Card.js";
+import {
+  initialCards,
+  settings,
+  formEditPopup,
+  formAddPopup,
+  photoList,
+  addButton,
+  editButton,
+} from "../utils/constants.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
-import { initialCards, settings, forms, photoList, addButton, editButton } from "../utils/constants.js";
+
+const popupFullRes = new PopupWithImage(".popup-full-image");
+
+//↑ Инициализация экземпляра класса PopupWithImage.
+
+function createNewCard(data) {
+  const card = new Card(
+    {
+      handleCardClick: (heading, imgLink) => {
+        popupFullRes.open(heading, imgLink);
+        popupFullRes.setEventListener();
+      },
+      heading: data.name,
+      imgLink: data.link,
+    },
+    "#card-template"
+  );
+  const generatedCard = card.generateCard();
+  return generatedCard;
+}
+
+//↑ Функция, которая создаёт и возвращает новую карточку.
 
 const cardList = new Section(
   {
     items: initialCards,
-    renderer: (elem) => {
-      const card = new Card(
-        {
-          handleCardClick: (heading, imgLink) => {
-            const popup = new PopupWithImage(
-              ".popup-full-image",
-              imgLink,
-              heading
-            );
-            popup.open();
-            popup.setEventListener();
-          },
-        
-        heading: elem.name,
-        imgLink: elem.link
-        },
-        "#card-template"
-      )
-      
-      const generatedCard = card.generateCard();
-      cardList.addItem(generatedCard);
+    renderer: (data) => {
+      const generatedCard = createNewCard(data);
+      cardList.addItemAppend(generatedCard);
     },
   },
   photoList
@@ -38,7 +49,7 @@ const cardList = new Section(
 
 cardList.renderItems();
 
-// ↑ Создаём карточки из массива initialCards и добавляем их на страницу. 
+//↑ Инициализация экземпляра слоя Section и вызов его метода, который берёт данные из массива initialCards, добавляет их в карточки и загружает на страницу.
 
 const user = new UserInfo({
   userName: ".profile__title",
@@ -47,37 +58,16 @@ const user = new UserInfo({
 
 //↑ Инициализация экземпляра класса UserInfo.
 
-const enableFormsValidation = new Section(
-  {
-    items: forms,
-    renderer: (form) => {
-      const validatedForm = new FormValidator(settings, form);
-      validatedForm.enableValidation();
-    },
-  },
-  ""
-);
+const formEditPopupInstance = new FormValidator(settings, formEditPopup);
+formEditPopupInstance.enableValidation();
 
-enableFormsValidation.renderItems();
+const formAddPopupInstance = new FormValidator(settings, formAddPopup);
+formAddPopupInstance.enableValidation();
 
 //↑ Включение валидации форм
 
-
-const popupAddCard = new PopupWithForm(".popup-add-place", (inputContent) => {
-  const card = new Card(
-    {
-      handleCardClick: (heading, imgLink) => {
-        const popup = new PopupWithImage(".popup-full-image", imgLink, heading);
-        popup.open();
-        popup.setEventListener();
-      },
-    heading: inputContent.place,
-    imgLink: inputContent.link,
-    },
-    "#card-template"
-  );
-
-  const generatedCard = card.generateCard();
+const popupAddCard = new PopupWithForm(".popup-add-place", (data) => {
+  const generatedCard = createNewCard(data);
   cardList.addItemPrepend(generatedCard);
   popupAddCard.close();
 });
@@ -86,12 +76,12 @@ popupAddCard.setEventListener();
 //↑ Инициализация экземпляра класса popupWithForm для попапа с добавлением новой карточки
 
 addButton.addEventListener("click", () => {
+  popupAddCard.clearInputValues();
   popupAddCard.open();
-  enableFormsValidation.renderItems();
+  formAddPopupInstance.enableValidation();
 });
 
 //↑ Обработчик события, который открывает попап с добавлением карточки и включает проверку валидации для полей формы
-
 
 const popupEditProfile = new PopupWithForm(
   ".popup-edit-profile",
@@ -110,10 +100,8 @@ popupEditProfile.setEventListener();
 
 editButton.addEventListener("click", () => {
   popupEditProfile.setInputValues(user.getUserInfo());
-  enableFormsValidation.renderItems();
+  formEditPopupInstance.enableValidation();
   popupEditProfile.open();
-  
 });
 
 //↑ Обработчик события, который открывает попап с данными о пользователе и включает проверку валидации для полей формы
-
