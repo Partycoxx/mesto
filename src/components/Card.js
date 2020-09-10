@@ -15,7 +15,7 @@ export default class Card {
   }
 
   _handleLikeButton() {
-    this._likeButton.classList.toggle("card__button_type_liked");
+    this._likeButton.classList.toggle("card__like-button_type_liked");
   }
 
   _handleDeleteButton(evt) {
@@ -24,7 +24,7 @@ export default class Card {
   }
 
   _setEventListeners() {
-    this._likeButton = this._element.querySelector(".card__button");
+    this._likeButton = this._element.querySelector(".card__like-button");
     this._trashButton = this._element.querySelector(".card__button-trash");
     this._cardImage = this._element.querySelector(".card__image");
 

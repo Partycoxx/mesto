@@ -14,7 +14,11 @@
             <main class="main narrow">
                 <section class="profile">
                     <div class="profile__data">
-                        <img class="profile__pic" src="./images/profile/profile-pic.jpg" alt="Фото профиля" />
+                        <div class="profile__pic-container">
+                            <img class="profile__pic" src="./images/profile/profile-pic.jpg" alt="Фото профиля" />
+                            <div class="profile__pic-overlay">
+                            </div>
+                        </div>
                         <div class="profile__container">
                             <h1 class="profile__title">Жак-Ив Кусто</h1>
                             <button class="button profile__edit-button change-opacity" aria-label="Редактировать" type="button"></button>
@@ -73,7 +77,29 @@
                 <button class="button popup__close-button popup__close-button_type_image change-opacity" type="button" aria-label="Закрыть окно"></button>
             </div>
         </div>
+        <div class="popup popup-delete">
+            <div class="popup__container popup__container_type_modal">
+                <h2 class="popup__heading popup__heading_type_delete-modal">Вы уверены?</h2>
+                <button class="button popup__button popup__button_type_delete-modal" type="button" name="agree-button">
+                    Да
+                </button>
+                <button class="button popup__close-button change-opacity" type="button" aria-label="Закрыть окно"></button>
+            </div>
 
+        </div>
+        <div class="popup popup-edit-avatar">
+            <div class="popup__container popup__container_type_modal">
+                <h2 class="popup__heading popup__heading_type_edit-avatar">Обновить аватар</h2>
+                <form class="popup__form" action="#" name="edit-avatar" method="post">
+                    <input class="popup__input popup__input_type_edit-avatar" id="avatar-link" type="url" name="avatar-link" placeholder="Ссылка на изображение" minlength="1" maxlength="30" required novalidate />
+                    <span class="popup__input-error" id="avatar-link-error"></span>
+                    <button class="button popup__button" type="submit" name="edit-avatar-button">
+                        Сохранить
+                    </button>
+                </form>
+                <button class="button popup__close-button change-opacity" type="button" aria-label="Закрыть окно"></button>
+            </div>
+        </div>
 
         <template id="card-template">
             <li class="card">
@@ -81,7 +107,10 @@
                 <img class="card__image" src="#" alt="На фото:"/>
                 <div class="card__content">
                     <h2 class="card__heading"></h2>
-                    <button class="button card__button change-opacity" type="button" aria-label="Оценить фото"></button>
+                    <div class="card__like-container">
+                        <button class="button card__like-button change-opacity" type="button" aria-label="Оценить фото"></button>
+                        <p class="card__like-counter">0</p>
+                    </div>
                 </div>
             </li>
         </template>
