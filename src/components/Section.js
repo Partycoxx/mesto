@@ -18,4 +18,8 @@ export default class Section {
     addItemPrepend(element) {
         this.containerSelector.prepend(element);
     }
+
+    setItems(newItems) {
+        this._items = newItems
+    }
 }
