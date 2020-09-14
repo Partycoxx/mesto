@@ -1,18 +1,19 @@
 import "./index.css";
 import {
-  initialCards,
   settings,
   formEditPopup,
   formAddPopup,
   photoList,
   addButton,
   editButton,
+  ownerId
 } from "../utils/constants.js";
 import Card from "../components/Card.js"
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithApprove from "../components/PopupWithApprove.js";
 import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js";
 
@@ -42,10 +43,15 @@ function createNewCard(data) {
         popupFullRes.open(heading, imgLink);
         popupFullRes.setEventListener();
       },
-      heading: data.name,
-      imgLink: data.link,
+      handleDeleteClick: (id, element) => {
+        popupApprove.open();
+        popupApprove.setData(id, element); 
+        popupApprove.setEventListener(); // ← сюда setEventListener
+      },
     },
-    "#card-template"
+    data,
+    "#card-template",
+    ownerId
   );
   const generatedCard = card.generateCard();
   return generatedCard;
@@ -68,12 +74,25 @@ const cardList = new Section(
 //↑ Инициализация экземпляра класса Section
 
 const popupFullRes = new PopupWithImage(".popup-full-image");
+const popupApprove = new PopupWithApprove(".popup-delete", 
+(id, element) => {
+  api.deleteCard({cardId: id})
+  .then(res => {
+    popupApprove.close();
+    element.remove();
+    element = null;
+  })
+  .catch(data => alert(data)); 
+}
+);
 
 //↑ Инициализация экземпляра класса PopupWithImage.
 
 api.getInitialData()
 .then(data => {
   const [userData, cardData] = data;
+
+  console.log(cardData);
 
   user.setUserInfo({newName: userData.name, newOccupation: userData.about});
   user.setUserAvatar({avatarLink: userData.avatar});
@@ -86,8 +105,6 @@ api.getInitialData()
   //↑ Загрузка данных карточек с сервера + рендеринг карточек с помощью слоя Section.
 
 }).catch(data => alert(data));
-
-
 
 const formEditPopupInstance = new FormValidator(settings, formEditPopup);
 formEditPopupInstance.enableValidation();

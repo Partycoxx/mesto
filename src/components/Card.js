@@ -1,9 +1,15 @@
 export default class Card {
-  constructor({ handleCardClick, heading, imgLink }, selector) {
-    this._heading = heading;
-    this._imgLink = imgLink;
-    this._selector = selector;
+  constructor({ handleCardClick, handleDeleteClick }, data, selector, ownerId) {
+
     this._handleCardClick = handleCardClick;
+    this._handleDeleteClick = handleDeleteClick;
+    this._selector = selector;
+    this._ownerId = ownerId;
+    this._newHeading = data.name;
+    this._newImageLink = data.link;
+    this._cardId = data._id;
+    this._likes = data.likes.length;
+    this._cardOwnerId = data.owner._id;
   }
 
   _getTemplate() {
@@ -18,36 +24,50 @@ export default class Card {
     this._likeButton.classList.toggle("card__like-button_type_liked");
   }
 
-  _handleDeleteButton(evt) {
-    this._trashButton.closest(".card").remove();
-    this._element = null;
+  _checkOwnership() {
+    if (this._cardOwnerId === this._ownerId) {
+      this._trashButton.addEventListener("click", () => {
+      this._handleDeleteClick(this._cardId, this._element)
+      }
+    );
+      this._setEventListeners();
+    } else {
+      this._trashButton.setAttribute('style', 'display: none');
+      this._setEventListeners();
+    }
   }
 
   _setEventListeners() {
+    this._cardImage.addEventListener("click", () =>
+      this._handleCardClick(this._newHeading, this._newImageLink)
+    );
+    this._likeButton.addEventListener("click", () => this._handleLikeButton());
+  }
+
+  _setLikes(numberOfLikes) {
+    this._likeCounter.textContent = numberOfLikes;
+  }
+  //↑ Вероятно, стоит сделать публичным
+
+  _setCardProperties() {
+
+    this._likeCounter = this._element.querySelector(".card__like-counter");
     this._likeButton = this._element.querySelector(".card__like-button");
     this._trashButton = this._element.querySelector(".card__button-trash");
     this._cardImage = this._element.querySelector(".card__image");
-
-    this._cardImage.addEventListener("click", () =>
-      this._handleCardClick(this._heading, this._imgLink)
-    );
-    this._likeButton.addEventListener("click", () => this._handleLikeButton());
-    this._trashButton.addEventListener("click", () =>
-      this._handleDeleteButton()
-    );
+    this._cardHeading = this._element.querySelector(".card__heading");
   }
 
   generateCard() {
     this._element = this._getTemplate();
+    this._setCardProperties();
 
-    const image = this._element.querySelector(".card__image");
-    const heading = this._element.querySelector(".card__heading");
+    this._cardImage.src = this._newImageLink;
+    this._cardImage.alt = `На фото: ${this._newHeading}`;
+    this._cardHeading.textContent = this._newHeading;
 
-    image.src = this._imgLink;
-    image.alt = `На фото: ${this._heading}`;
-    heading.textContent = this._heading;
-
-    this._setEventListeners();
+    this._checkOwnership();
+    this._setLikes(this._likes);
 
     return this._element;
   }

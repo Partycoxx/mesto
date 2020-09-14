@@ -4,7 +4,7 @@ export default class Api {
         this._headers = headers;
     }
 
-    getUserData() {
+    _getUserData() {
         return fetch(`${this._baseUrl}/users/me`, {
             method: 'GET',
             headers: this._headers
@@ -18,7 +18,7 @@ export default class Api {
         })
     }
 
-    getCardList() {
+    _getCardList() {
         return fetch(`${this._baseUrl}/cards`, {
             method: 'GET',
             headers: this._headers
@@ -33,7 +33,7 @@ export default class Api {
     }
 
     getInitialData() {
-        return Promise.all([this.getUserData(), this.getCardList()]);
+        return Promise.all([this._getUserData(), this._getCardList()]);
     }
 
     editUserInfo({newName, newOccupation}) {
@@ -70,5 +70,20 @@ export default class Api {
                 return Promise.reject('Произошла ошибка');
             }
         })
+    }
+
+    deleteCard({cardId}) {
+        return fetch(`${this._baseUrl}/cards/${cardId}`, {
+            method: 'DELETE',
+            headers: this._headers
+        })
+        .then(res => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                return Promise.reject('Произошла ошибка');
+            }
+        })
+
     }
 }
