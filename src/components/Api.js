@@ -4,7 +4,7 @@ export default class Api {
         this._headers = headers;
     }
 
-    getUserInfo() {
+    getUserData() {
         return fetch(`${this._baseUrl}/users/me`, {
             method: 'GET',
             headers: this._headers
@@ -30,6 +30,10 @@ export default class Api {
                 return Promise.reject('Произошла ошибка');
             }
         })  
+    }
+
+    getInitialData() {
+        return Promise.all([this.getUserData(), this.getCardList()]);
     }
 
     editUserInfo({newName, newOccupation}) {

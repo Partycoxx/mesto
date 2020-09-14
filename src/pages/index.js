@@ -35,43 +35,6 @@ const user = new UserInfo({
 
 //↑ Инициализация экземпляра класса UserInfo.
 
-api.getUserInfo()
-.then(data => {
-  user.setUserInfo({newName: data.name, newOccupation: data.about});
-  user.setUserAvatar({avatarLink: data.avatar});
-})
-.catch(err => console.log(err));
-
-//↑ Загрузка информации о пользователе с помощью метода Api !!!!!! Обновить catch, добавить подсос аватарки.
-
-
-const cardList = new Section(
-  {
-    items: [] ,
-    renderer: (data) => {
-      const generatedCard = createNewCard(data);
-      cardList.addItemAppend(generatedCard);
-    },
-  },
-  photoList
-);
-
-//↑ Инициализация экземпляра класса Section
-
-
-api.getCardList()
-.then(data => {
-  cardList.setItems(data.map(item => item))
-  cardList.renderItems();
-})
-.catch(err => console.log(err));
-
-//↑ Загрузка данных карточек с сервера + рендеринг карточек с помощью слоя Section.
-
-const popupFullRes = new PopupWithImage(".popup-full-image");
-
-//↑ Инициализация экземпляра класса PopupWithImage.
-
 function createNewCard(data) {
   const card = new Card(
     {
@@ -89,6 +52,41 @@ function createNewCard(data) {
 }
 
 //↑ Функция, которая создаёт и возвращает новую карточку.
+
+
+const cardList = new Section(
+  {
+    items: [] ,
+    renderer: (data) => {
+      const generatedCard = createNewCard(data);
+      cardList.addItemAppend(generatedCard);
+    },
+  },
+  photoList
+);
+
+//↑ Инициализация экземпляра класса Section
+
+const popupFullRes = new PopupWithImage(".popup-full-image");
+
+//↑ Инициализация экземпляра класса PopupWithImage.
+
+api.getInitialData()
+.then(data => {
+  const [userData, cardData] = data;
+
+  user.setUserInfo({newName: userData.name, newOccupation: userData.about});
+  user.setUserAvatar({avatarLink: userData.avatar});
+
+  //↑ Загрузка информации о пользователе с сервера
+
+  cardList.setItems(cardData.map(item => item));
+  cardList.renderItems();
+
+  //↑ Загрузка данных карточек с сервера + рендеринг карточек с помощью слоя Section.
+
+}).catch(data => alert(data));
+
 
 
 const formEditPopupInstance = new FormValidator(settings, formEditPopup);

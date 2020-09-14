@@ -20,7 +20,8 @@ export default class UserInfo {
     }
 
     setUserAvatar({avatarLink}) {
-        this._avatar.src = avatarLink;
+        this._avatar.src = avatarLink; 
+        
 
     }
 }
