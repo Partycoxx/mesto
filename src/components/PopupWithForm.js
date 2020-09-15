@@ -18,9 +18,13 @@ export default class PopupWithForm extends Popup {
     return this._formValues;
   }
 
-  setInputValues(obj) {
+  setUserData(obj) {
     this._inputList[0].value = obj.name;
     this._inputList[1].value = obj.occupation;
+  }
+
+  setUserAvatar(obj) {
+    this._inputList[0].value = obj.avatar; 
   }
 
   setEventListener() {
@@ -28,7 +32,7 @@ export default class PopupWithForm extends Popup {
 
     this._popup.addEventListener("submit", (evt) => {
       evt.preventDefault();
-      this._handleFormSubmit(this._getInputValues());
+      this._handleFormSubmit(this._getInputValues(), this._button);
     });
   }
 

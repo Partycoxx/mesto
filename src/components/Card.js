@@ -1,15 +1,19 @@
 export default class Card {
-  constructor({ handleCardClick, handleDeleteClick }, data, selector, ownerId) {
+  constructor({ handleCardClick, handleDeleteClick, handleLikeCard, handleDislikeCard }, 
+    {newHeading, newImageLink, cardId, likes, numberOfLikes, cardOwnerId}, selector, ownerId) {
 
     this._handleCardClick = handleCardClick;
     this._handleDeleteClick = handleDeleteClick;
+    this._handleLikeCard = handleLikeCard;
+    this._handleDislikeCard = handleDislikeCard;
+    this._newHeading = newHeading;
+    this._newImageLink = newImageLink;
+    this._cardId = cardId;
+    this._likes = likes;
+    this._numberOfLikes = numberOfLikes;
+    this._cardOwnerId = cardOwnerId;
     this._selector = selector;
     this._ownerId = ownerId;
-    this._newHeading = data.name;
-    this._newImageLink = data.link;
-    this._cardId = data._id;
-    this._likes = data.likes.length;
-    this._cardOwnerId = data.owner._id;
   }
 
   _getTemplate() {
@@ -22,6 +26,13 @@ export default class Card {
 
   _handleLikeButton() {
     this._likeButton.classList.toggle("card__like-button_type_liked");
+
+    if (this._likeButton.classList.contains("card__like-button_type_liked")) {
+      this._handleLikeCard(this._cardId);
+    } else {
+      this._handleDislikeCard(this._cardId) 
+    }
+
   }
 
   _checkOwnership() {
@@ -37,17 +48,23 @@ export default class Card {
     }
   }
 
+  _checkLikesList() {
+
+    if (this._likes.some(elem => elem._id === this._ownerId)) {
+      this._likeButton.classList.toggle("card__like-button_type_liked");
+    }
+  }
+
   _setEventListeners() {
     this._cardImage.addEventListener("click", () =>
       this._handleCardClick(this._newHeading, this._newImageLink)
     );
-    this._likeButton.addEventListener("click", () => this._handleLikeButton());
+    this._likeButton.addEventListener("click", () => this._handleLikeButton()); // Передать коллбэк с функцией постановки лайка лайком сюда
   }
 
-  _setLikes(numberOfLikes) {
+  setLikes(numberOfLikes) {
     this._likeCounter.textContent = numberOfLikes;
   }
-  //↑ Вероятно, стоит сделать публичным
 
   _setCardProperties() {
 
@@ -67,7 +84,8 @@ export default class Card {
     this._cardHeading.textContent = this._newHeading;
 
     this._checkOwnership();
-    this._setLikes(this._likes);
+    this._checkLikesList();
+    this.setLikes(this._numberOfLikes); /// перенести в Index
 
     return this._element;
   }

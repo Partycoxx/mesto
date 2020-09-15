@@ -10,4 +10,5 @@
     background-image: url(../../../images/icons/edit-symbol.svg);
     background-position: center;
     background-repeat: no-repeat;
+    cursor: pointer;
 }

@@ -3,9 +3,11 @@ import {
   settings,
   formEditPopup,
   formAddPopup,
+  formAddAvatar,
   photoList,
   addButton,
   editButton,
+  addAvatarButton,
   ownerId
 } from "../utils/constants.js";
 import Card from "../components/Card.js"
@@ -44,12 +46,44 @@ function createNewCard(data) {
         popupFullRes.setEventListener();
       },
       handleDeleteClick: (id, element) => {
+        popupApprove.setData(id, element, 
+          (id, element) => {
+              api.deleteCard({cardId: id})
+              .then(res => {
+                popupApprove.close();
+                element.remove();
+                element = null;
+              })
+              .catch(data => alert(data)); 
+            }
+          );
+        popupApprove.setEventListener(); 
         popupApprove.open();
-        popupApprove.setData(id, element); 
-        popupApprove.setEventListener(); // ← сюда setEventListener
       },
+      handleLikeCard: (id) => {
+        api.likeCard({cardId: id})
+        .then(res => {
+          card.setLikes(res.likes.length);
+        })
+        .catch(data => alert(data));
+      },
+      handleDislikeCard: (id) => {
+        api.dislikeCard({cardId: id})
+        .then(res => {
+          card.setLikes(res.likes.length);
+        })
+        .catch(data => alert(data))
+      }
+
     },
-    data,
+    {
+      newHeading: data.name,
+      newImageLink: data.link,
+      cardId: data._id,
+      likes: data.likes,
+      numberOfLikes: data.likes.length,
+      cardOwnerId: data.owner._id
+    },
     "#card-template",
     ownerId
   );
@@ -74,19 +108,12 @@ const cardList = new Section(
 //↑ Инициализация экземпляра класса Section
 
 const popupFullRes = new PopupWithImage(".popup-full-image");
-const popupApprove = new PopupWithApprove(".popup-delete", 
-(id, element) => {
-  api.deleteCard({cardId: id})
-  .then(res => {
-    popupApprove.close();
-    element.remove();
-    element = null;
-  })
-  .catch(data => alert(data)); 
-}
-);
 
 //↑ Инициализация экземпляра класса PopupWithImage.
+
+const popupApprove = new PopupWithApprove(".popup-delete");
+
+//↑ Инициализация экземпляра класса PopupWithApprove.
 
 api.getInitialData()
 .then(data => {
@@ -103,8 +130,8 @@ api.getInitialData()
   cardList.renderItems();
 
   //↑ Загрузка данных карточек с сервера + рендеринг карточек с помощью слоя Section.
-
-}).catch(data => alert(data));
+})
+.catch(err => console.log(err));
 
 const formEditPopupInstance = new FormValidator(settings, formEditPopup);
 formEditPopupInstance.enableValidation();
@@ -112,11 +139,15 @@ formEditPopupInstance.enableValidation();
 const formAddPopupInstance = new FormValidator(settings, formAddPopup);
 formAddPopupInstance.enableValidation();
 
-//↑ Включение валидации форм
+const formAddAvatarInstance = new FormValidator(settings, formAddAvatar);
+formAddAvatarInstance.enableValidation();
+
+//↑ Включение валидации форм в попапах
 
 const popupAddCard = new PopupWithForm(
   ".popup-add-place",
-  (data) => {
+  (data, buttonElem) => {
+  popupAddCard.setElemStatus(buttonElem, "Создание...");  
   api.addNewCard({
     dataName: data.name, 
     dataLink: data.link
@@ -124,6 +155,12 @@ const popupAddCard = new PopupWithForm(
   .then(data => {
     const generatedCard = createNewCard(data);
     cardList.addItemPrepend(generatedCard);
+  })
+  .catch(err => {
+    console.log(err)
+  })
+  .finally(res => {
+    popupAddCard.setElemStatus(buttonElem, "Создать");
     popupAddCard.close();
   })
 });
@@ -141,7 +178,8 @@ addButton.addEventListener("click", () => {
 
 const popupEditProfile = new PopupWithForm(
   ".popup-edit-profile",
-  (userData) => {
+  (userData, buttonElem) => {
+    popupEditProfile.setElemStatus(buttonElem, "Сохранение...");
     api.editUserInfo({
       newName: userData.name,
       newOccupation: userData.about,
@@ -150,10 +188,15 @@ const popupEditProfile = new PopupWithForm(
       user.setUserInfo({
         newName: data.name,
         newOccupation: data.about,
-      })
+      });
     })
-    .catch(err => console.log(err));
-    popupEditProfile.close();
+    .catch(err => {
+      console.log(err)
+    })
+    .finally(res => {
+      popupEditProfile.setElemStatus(buttonElem, "Сохранить");
+      popupEditProfile.close();
+    });
   }
 );
 popupEditProfile.setEventListener();
@@ -163,9 +206,39 @@ popupEditProfile.setEventListener();
 // успешный ответ передаём в метод setUserInfo, который обновляет данные на странице.   
 
 editButton.addEventListener("click", () => {
-  popupEditProfile.setInputValues(user.getUserInfo());
+  popupEditProfile.setUserData(user.getUserData());
   formEditPopupInstance.enableValidation();
   popupEditProfile.open();
 });
 
 //↑ Обработчик события, который открывает попап с данными о пользователе и включает проверку валидации для полей формы
+
+const popupAddAvatar = new PopupWithForm(
+  ".popup-edit-avatar",
+  (userData, buttonElem) => {
+    popupAddAvatar.setElemStatus(buttonElem, "Сохранение...");
+    api.addUserAvatar({
+      avatarLink: userData.avatarLink
+    })
+    .then(data => {
+      user.setUserAvatar({
+        avatarLink: data.avatar
+      });
+    })
+    .catch(err => {
+      console.log(err)
+    })
+    .finally(res => {
+      popupAddAvatar.setElemStatus(buttonElem, "Сохранить");
+      popupAddAvatar.close();
+    })
+    
+  }
+)
+popupAddAvatar.setEventListener();
+
+addAvatarButton.addEventListener("click", () => {
+  popupAddAvatar.setUserAvatar(user.getUserData());
+  formAddAvatarInstance.enableValidation();
+  popupAddAvatar.open();
+});

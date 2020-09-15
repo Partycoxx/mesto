@@ -21,6 +21,10 @@ export default class Popup {
     }
   }
 
+  setElemStatus(elem, label) {
+    elem.textContent = label;
+  }
+
   setEventListener() {
     this._popup.addEventListener("mousedown", (evt) => {
         if (
