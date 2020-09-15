@@ -8,9 +8,9 @@ import {
   addButton,
   editButton,
   addAvatarButton,
-  ownerId
+  ownerId,
 } from "../utils/constants.js";
-import Card from "../components/Card.js"
+import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
@@ -19,15 +19,13 @@ import PopupWithApprove from "../components/PopupWithApprove.js";
 import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js";
 
-
-
 const api = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-15',
+  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-15",
   headers: {
-    authorization: '1fc0b639-a579-4abe-9981-a2f8e932c357',
-    'Content-Type': 'application/json'
-  }
-})
+    authorization: "1fc0b639-a579-4abe-9981-a2f8e932c357",
+    "Content-Type": "application/json",
+  },
+});
 
 //↑ Инициализация экземпляра класса Api
 
@@ -38,65 +36,9 @@ const user = new UserInfo({
 
 //↑ Инициализация экземпляра класса UserInfo.
 
-function createNewCard(data) {
-  const card = new Card(
-    {
-      handleCardClick: (heading, imgLink) => {
-        popupFullRes.open(heading, imgLink);
-        popupFullRes.setEventListener();
-      },
-      handleDeleteClick: (id, element) => {
-        popupApprove.setData(id, element, 
-          (id, element) => {
-              api.deleteCard({cardId: id})
-              .then(res => {
-                popupApprove.close();
-                element.remove();
-                element = null;
-              })
-              .catch(data => alert(data)); 
-            }
-          );
-        popupApprove.setEventListener(); 
-        popupApprove.open();
-      },
-      handleLikeCard: (id) => {
-        api.likeCard({cardId: id})
-        .then(res => {
-          card.setLikes(res.likes.length);
-        })
-        .catch(data => alert(data));
-      },
-      handleDislikeCard: (id) => {
-        api.dislikeCard({cardId: id})
-        .then(res => {
-          card.setLikes(res.likes.length);
-        })
-        .catch(data => alert(data))
-      }
-
-    },
-    {
-      newHeading: data.name,
-      newImageLink: data.link,
-      cardId: data._id,
-      likes: data.likes,
-      numberOfLikes: data.likes.length,
-      cardOwnerId: data.owner._id
-    },
-    "#card-template",
-    ownerId
-  );
-  const generatedCard = card.generateCard();
-  return generatedCard;
-}
-
-//↑ Функция, которая создаёт и возвращает новую карточку.
-
-
 const cardList = new Section(
   {
-    items: [] ,
+    items: [],
     renderer: (data) => {
       const generatedCard = createNewCard(data);
       cardList.addItemAppend(generatedCard);
@@ -115,23 +57,88 @@ const popupApprove = new PopupWithApprove(".popup-delete");
 
 //↑ Инициализация экземпляра класса PopupWithApprove.
 
-api.getInitialData()
-.then(data => {
-  const [userData, cardData] = data;
+function createNewCard(data) {
+  const card = new Card(
+    {
+      handleCardClick: (heading, imgLink) => {
+        popupFullRes.open(heading, imgLink);
+        popupFullRes.setEventListener();
+      },
+      handleDeleteClick: (id, element) => {
+        popupApprove.setData(id, element, (id, element) => {
+          api
+            .deleteCard({ cardId: id })
+            .then((res) => {
+              popupApprove.close();
+              element.remove();
+              element = null;
+            })
+            .catch((data) => alert(data));
+        });
+        popupApprove.setEventListener();
+        popupApprove.open();
+      },
+      handleLikeCard: (id) => {
+        api
+          .likeCard({ cardId: id })
+          .then((res) => {
+            card.setLikes(res.likes.length);
+          })
+          .catch((data) => alert(data));
+      },
+      handleDislikeCard: (id) => {
+        api
+          .dislikeCard({ cardId: id })
+          .then((res) => {
+            card.setLikes(res.likes.length);
+          })
+          .catch((data) => alert(data));
+      },
+    },
+    {
+      newHeading: data.name,
+      newImageLink: data.link,
+      cardId: data._id,
+      likes: data.likes,
+      numberOfLikes: data.likes.length,
+      cardOwnerId: data.owner._id,
+    },
+    "#card-template",
+    ownerId
+  );
+  const generatedCard = card.generateCard();
+  return generatedCard;
+}
 
-  console.log(cardData);
+//↑ Функция, которая создаёт и возвращает новую карточку.
+// Инстанс класса Card принимает 4 коллбэка, которые регулируют: 
+//    handleCardClick — полноформатное отображение картинок;
+//    handleDeleteClick — удаление карточки;
+//    handleLikeCard — добавление лайка карточки;
+//    handleDislikeCard — удаление лайка карточки. 
+//Также принимает необходимые данные от сервера: 
+//    Заголовок для карточки.
+//    Ссылку на изображение.
+//    ID карточки. 
+//    Массив с лайкнувшими пользователями.
+//    Количество лайкнувших пользователей.
+//    ID создателя карточки.  
 
-  user.setUserInfo({newName: userData.name, newOccupation: userData.about});
-  user.setUserAvatar({avatarLink: userData.avatar});
 
-  //↑ Загрузка информации о пользователе с сервера
+api
+  .getInitialData()
+  .then((data) => {
+    const [userData, cardData] = data;
 
-  cardList.setItems(cardData.map(item => item));
-  cardList.renderItems();
+    user.setUserInfo({ newName: userData.name, newOccupation: userData.about });
+    user.setUserAvatar({ avatarLink: userData.avatar });
 
-  //↑ Загрузка данных карточек с сервера + рендеринг карточек с помощью слоя Section.
-})
-.catch(err => console.log(err));
+    cardList.setItems(cardData.map((item) => item));
+    cardList.renderItems();
+  })
+  .catch((err) => console.log(err));
+
+  //↑ Отправляем запрос на сервер, в случае успеха — получаем данные о пользователе и карточки, рендерим карточки с помощью слоя Section.
 
 const formEditPopupInstance = new FormValidator(settings, formEditPopup);
 formEditPopupInstance.enableValidation();
@@ -147,26 +154,88 @@ formAddAvatarInstance.enableValidation();
 const popupAddCard = new PopupWithForm(
   ".popup-add-place",
   (data, buttonElem) => {
-  popupAddCard.setElemStatus(buttonElem, "Создание...");  
-  api.addNewCard({
-    dataName: data.name, 
-    dataLink: data.link
-  })
-  .then(data => {
-    const generatedCard = createNewCard(data);
-    cardList.addItemPrepend(generatedCard);
-  })
-  .catch(err => {
-    console.log(err)
-  })
-  .finally(res => {
-    popupAddCard.setElemStatus(buttonElem, "Создать");
-    popupAddCard.close();
-  })
-});
+    popupAddCard.setElemStatus(buttonElem, "Создание...");
+    api
+      .addNewCard({
+        dataName: data.name,
+        dataLink: data.link,
+      })
+      .then((data) => {
+        const generatedCard = createNewCard(data);
+        cardList.addItemPrepend(generatedCard);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally((res) => {
+        popupAddCard.setElemStatus(buttonElem, "Создать");
+        popupAddCard.close();
+      });
+  }
+);
 popupAddCard.setEventListener();
 
-//↑ Инициализация экземпляра класса popupWithForm для попапа с добавлением новой карточки
+//↑ Инициализация экземпляра класса popupWithForm для попапа с добавлением новой карточки.
+//В коллбэке передаём данные из попапа, которые ввёл пользователь, и элемент кнопки. 
+//Данные улетают на сервер, кнопка меняет вид.
+//В случае успеха получаем ответ от сервера с обновлёнными именем пользователя и описанием и добавляем их на страницу.
+//В случае неудачи выводим ошибку.
+//В любом случае возвращаем кнопке исходный вид и закрываем попап.
+//Остальные инстансы popupWithForm устроены по аналогии.
+
+const popupEditProfile = new PopupWithForm(
+  ".popup-edit-profile",
+  (userData, buttonElem) => {
+    popupEditProfile.setElemStatus(buttonElem, "Сохранение...");
+    api
+      .editUserInfo({
+        newName: userData.name,
+        newOccupation: userData.about,
+      })
+      .then((data) => {
+        user.setUserInfo({
+          newName: data.name,
+          newOccupation: data.about,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally((res) => {
+        popupEditProfile.setElemStatus(buttonElem, "Сохранить");
+        popupEditProfile.close();
+      });
+  }
+);
+popupEditProfile.setEventListener();
+
+//↑ Инициализация экземпляра класса popupWithForm для попапа с данными о пользователе.
+
+const popupAddAvatar = new PopupWithForm(
+  ".popup-edit-avatar",
+  (userData, buttonElem) => {
+    popupAddAvatar.setElemStatus(buttonElem, "Сохранение...");
+    api
+      .addUserAvatar({
+        avatarLink: userData.avatarLink,
+      })
+      .then((data) => {
+        user.setUserAvatar({
+          avatarLink: data.avatar,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally((res) => {
+        popupAddAvatar.setElemStatus(buttonElem, "Сохранить");
+        popupAddAvatar.close();
+      });
+  }
+);
+popupAddAvatar.setEventListener();
+
+//↑ Инициализация экземпляра класса PopupWithForm для попапа с обновлением аватара.
 
 addButton.addEventListener("click", () => {
   popupAddCard.clearInputValues();
@@ -176,35 +245,6 @@ addButton.addEventListener("click", () => {
 
 //↑ Обработчик события, который открывает попап с добавлением карточки и включает проверку валидации для полей формы
 
-const popupEditProfile = new PopupWithForm(
-  ".popup-edit-profile",
-  (userData, buttonElem) => {
-    popupEditProfile.setElemStatus(buttonElem, "Сохранение...");
-    api.editUserInfo({
-      newName: userData.name,
-      newOccupation: userData.about,
-    })
-    .then(data => {
-      user.setUserInfo({
-        newName: data.name,
-        newOccupation: data.about,
-      });
-    })
-    .catch(err => {
-      console.log(err)
-    })
-    .finally(res => {
-      popupEditProfile.setElemStatus(buttonElem, "Сохранить");
-      popupEditProfile.close();
-    });
-  }
-);
-popupEditProfile.setEventListener();
-
-//↑ Инициализация экземпляра класса popupWithForm для попапа с данными о пользователе.
-// В коллбэке отправляем новые имя и занятие пользователя на сервер с помощью метода editUserInfo, 
-// успешный ответ передаём в метод setUserInfo, который обновляет данные на странице.   
-
 editButton.addEventListener("click", () => {
   popupEditProfile.setUserData(user.getUserData());
   formEditPopupInstance.enableValidation();
@@ -213,32 +253,10 @@ editButton.addEventListener("click", () => {
 
 //↑ Обработчик события, который открывает попап с данными о пользователе и включает проверку валидации для полей формы
 
-const popupAddAvatar = new PopupWithForm(
-  ".popup-edit-avatar",
-  (userData, buttonElem) => {
-    popupAddAvatar.setElemStatus(buttonElem, "Сохранение...");
-    api.addUserAvatar({
-      avatarLink: userData.avatarLink
-    })
-    .then(data => {
-      user.setUserAvatar({
-        avatarLink: data.avatar
-      });
-    })
-    .catch(err => {
-      console.log(err)
-    })
-    .finally(res => {
-      popupAddAvatar.setElemStatus(buttonElem, "Сохранить");
-      popupAddAvatar.close();
-    })
-    
-  }
-)
-popupAddAvatar.setEventListener();
-
 addAvatarButton.addEventListener("click", () => {
   popupAddAvatar.setUserAvatar(user.getUserData());
   formAddAvatarInstance.enableValidation();
   popupAddAvatar.open();
 });
+
+//↑ Обработчик события, который открывает попап с обновлением аватарки и включает проверку валидации для полей формы. 
