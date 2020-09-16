@@ -32,6 +32,7 @@ const api = new Api({
 const user = new UserInfo({
   userName: ".profile__title",
   userOccupation: ".profile__subtitle",
+  userAvatar: ".profile__pic"
 });
 
 //↑ Инициализация экземпляра класса UserInfo.
@@ -49,11 +50,13 @@ const cardList = new Section(
 
 //↑ Инициализация экземпляра класса Section
 
-const popupFullRes = new PopupWithImage(".popup-full-image");
+const popupFullRes = new PopupWithImage(".popup-full-image", ".popup__image", ".popup__capture");
+popupFullRes.setEventListener();
 
 //↑ Инициализация экземпляра класса PopupWithImage.
 
 const popupApprove = new PopupWithApprove(".popup-delete");
+popupApprove.setEventListener();
 
 //↑ Инициализация экземпляра класса PopupWithApprove.
 
@@ -62,7 +65,7 @@ function createNewCard(data) {
     {
       handleCardClick: (heading, imgLink) => {
         popupFullRes.open(heading, imgLink);
-        popupFullRes.setEventListener();
+        
       },
       handleDeleteClick: (id, element) => {
         popupApprove.setData(id, element, (id, element) => {
@@ -75,7 +78,6 @@ function createNewCard(data) {
             })
             .catch((data) => alert(data));
         });
-        popupApprove.setEventListener();
         popupApprove.open();
       },
       handleLikeCard: (id) => {
@@ -106,8 +108,7 @@ function createNewCard(data) {
     "#card-template",
     ownerId
   );
-  const generatedCard = card.generateCard();
-  return generatedCard;
+  return card.generateCard();
 }
 
 //↑ Функция, которая создаёт и возвращает новую карточку.
@@ -133,23 +134,12 @@ api
     user.setUserInfo({ newName: userData.name, newOccupation: userData.about });
     user.setUserAvatar({ avatarLink: userData.avatar });
 
-    cardList.setItems(cardData.map((item) => item));
+    cardList.setItems(cardData);
     cardList.renderItems();
   })
   .catch((err) => console.log(err));
 
   //↑ Отправляем запрос на сервер, в случае успеха — получаем данные о пользователе и карточки, рендерим карточки с помощью слоя Section.
-
-const formEditPopupInstance = new FormValidator(settings, formEditPopup);
-formEditPopupInstance.enableValidation();
-
-const formAddPopupInstance = new FormValidator(settings, formAddPopup);
-formAddPopupInstance.enableValidation();
-
-const formAddAvatarInstance = new FormValidator(settings, formAddAvatar);
-formAddAvatarInstance.enableValidation();
-
-//↑ Включение валидации форм в попапах
 
 const popupAddCard = new PopupWithForm(
   ".popup-add-place",
@@ -163,13 +153,13 @@ const popupAddCard = new PopupWithForm(
       .then((data) => {
         const generatedCard = createNewCard(data);
         cardList.addItemPrepend(generatedCard);
+        popupAddCard.close();
       })
       .catch((err) => {
         console.log(err);
       })
-      .finally((res) => {
+      .finally(() => {
         popupAddCard.setElemStatus(buttonElem, "Создать");
-        popupAddCard.close();
       });
   }
 );
@@ -190,20 +180,20 @@ const popupEditProfile = new PopupWithForm(
     api
       .editUserInfo({
         newName: userData.name,
-        newOccupation: userData.about,
+        newOccupation: userData.occupation,
       })
       .then((data) => {
         user.setUserInfo({
           newName: data.name,
           newOccupation: data.about,
         });
+        popupEditProfile.close();
       })
       .catch((err) => {
         console.log(err);
       })
-      .finally((res) => {
+      .finally(() => {
         popupEditProfile.setElemStatus(buttonElem, "Сохранить");
-        popupEditProfile.close();
       });
   }
 );
@@ -217,19 +207,19 @@ const popupAddAvatar = new PopupWithForm(
     popupAddAvatar.setElemStatus(buttonElem, "Сохранение...");
     api
       .addUserAvatar({
-        avatarLink: userData.avatarLink,
+        avatarLink: userData.avatar,
       })
       .then((data) => {
         user.setUserAvatar({
           avatarLink: data.avatar,
         });
+        popupAddAvatar.close();
       })
       .catch((err) => {
         console.log(err);
       })
-      .finally((res) => {
+      .finally(() => {
         popupAddAvatar.setElemStatus(buttonElem, "Сохранить");
-        popupAddAvatar.close();
       });
   }
 );
@@ -239,24 +229,35 @@ popupAddAvatar.setEventListener();
 
 addButton.addEventListener("click", () => {
   popupAddCard.clearInputValues();
+  formAddPopupInstance.toggleButtonState();
   popupAddCard.open();
-  formAddPopupInstance.enableValidation();
 });
 
 //↑ Обработчик события, который открывает попап с добавлением карточки и включает проверку валидации для полей формы
 
 editButton.addEventListener("click", () => {
   popupEditProfile.setUserData(user.getUserData());
-  formEditPopupInstance.enableValidation();
+  formEditPopupInstance.toggleButtonState();
   popupEditProfile.open();
 });
 
 //↑ Обработчик события, который открывает попап с данными о пользователе и включает проверку валидации для полей формы
 
 addAvatarButton.addEventListener("click", () => {
-  popupAddAvatar.setUserAvatar(user.getUserData());
-  formAddAvatarInstance.enableValidation();
+  popupAddAvatar.setUserData(user.getUserData());
+  formAddAvatarInstance.toggleButtonState();
   popupAddAvatar.open();
 });
 
 //↑ Обработчик события, который открывает попап с обновлением аватарки и включает проверку валидации для полей формы. 
+
+const formEditPopupInstance = new FormValidator(settings, formEditPopup);
+formEditPopupInstance.enableValidation();
+
+const formAddPopupInstance = new FormValidator(settings, formAddPopup);
+formAddPopupInstance.enableValidation();
+
+const formAddAvatarInstance = new FormValidator(settings, formAddAvatar);
+formAddAvatarInstance.enableValidation();
+
+//↑ Включение валидации форм в попапах

@@ -18,13 +18,13 @@ export default class PopupWithForm extends Popup {
     return this._formValues;
   }
 
-  setUserData(obj) {
-    this._inputList[0].value = obj.name;
-    this._inputList[1].value = obj.occupation;
+  _disableButton() {
+    this._button.classList.add("popup__button_inactive");
+    this._button.setAttribute("disabled", "true");
   }
 
-  setUserAvatar(obj) {
-    this._inputList[0].value = obj.avatar; 
+  setUserData(obj) {
+    this._inputList.forEach(input => input.value = obj[input.name]);
   }
 
   setEventListener() {
@@ -38,8 +38,7 @@ export default class PopupWithForm extends Popup {
 
   close() {
     super.close();
-    this._button.classList.add("popup__button_inactive");
-    this._button.setAttribute("disabled", "true");
+    this._disableButton();
   }
 
   clearInputValues() {

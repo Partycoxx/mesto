@@ -1,9 +1,6 @@
 import Popup from "./Popup.js";
 
 export default class PopupWithApprove extends Popup {
-constructor(popupSelector) {
-    super(popupSelector);
-}
 
 setData(id, element, handleSubmit) {
     this._id = id;

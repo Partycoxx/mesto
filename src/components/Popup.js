@@ -15,8 +15,8 @@ export default class Popup {
   }
 
   _toggleEscClose(evt) {
-    const openedPopup = document.querySelector(".popup_opened");
-    if (evt.key === "Escape" && openedPopup != null) {
+    this._openedPopup = document.querySelector(".popup_opened");
+    if (evt.key === "Escape" && this._openedPopup != null) {
         this.close();
     }
   }
