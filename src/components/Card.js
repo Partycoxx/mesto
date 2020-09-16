@@ -59,7 +59,7 @@ export default class Card {
     this._cardImage.addEventListener("click", () =>
       this._handleCardClick(this._newHeading, this._newImageLink)
     );
-    this._likeButton.addEventListener("click", () => this._handleLikeButton()); // Передать коллбэк с функцией постановки лайка лайком сюда
+    this._likeButton.addEventListener("click", () => this._handleLikeButton()); 
   }
 
   setLikes(numberOfLikes) {
@@ -85,7 +85,7 @@ export default class Card {
 
     this._checkOwnership();
     this._checkLikesList();
-    this.setLikes(this._numberOfLikes); /// перенести в Index
+    this.setLikes(this._numberOfLikes);
 
     return this._element;
   }
